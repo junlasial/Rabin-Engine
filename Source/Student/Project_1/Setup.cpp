@@ -9,7 +9,7 @@ void ProjectOne::setup()
 
     // You can change properties here or at runtime from a behavior tree leaf node
     // Look in Agent.h for all of the setters, like these:
-    // man->set_color(Vec3(1, 0, 1));
+     man->set_color(Vec3(0, 1, 0));
     // man->set_scaling(Vec3(7,7,7));
     // man->set_position(Vec3(100, 0, 100));
 
@@ -40,7 +40,22 @@ void ProjectOne::setup()
     // You can also enable the pathing layer and set grid square colors as you see fit.
     // Works best with map 0, the completely blank map
     terrain->pathLayer.set_enabled(true);
-    terrain->pathLayer.set_value(0, 0, Colors::Red);
+  
+
+    for (int row = 0; row <= 19; ++row) {
+        for (int col = 0; col <= 19; ++col) {
+            // If the sum of row and column indices is even, set color to Black,
+            // otherwise, set color to White
+            Color color = ((row + col) % 2 == 0) ? Colors::Black : Colors::White;
+
+            // Set the color for the current cell
+            terrain->pathLayer.set_value(row, col, color);
+        }
+    }
+
+
+
+
 
     // Camera position can be modified from this default
     auto camera = agents->get_camera_agent();
