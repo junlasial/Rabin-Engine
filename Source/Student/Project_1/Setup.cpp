@@ -5,12 +5,12 @@
 void ProjectOne::setup()
 {
     // Create an agent (using the default "Agent::AgentModel::Man" model)
-    auto man = agents->create_behavior_agent("ExampleAgent", BehaviorTreeTypes::Example);
+    auto man = agents->create_behavior_agent("ExampleAgent", BehaviorTreeTypes::corner);
 
     // You can change properties here or at runtime from a behavior tree leaf node
     // Look in Agent.h for all of the setters, like these:
-     man->set_color(Vec3(0, 1, 0));
-    // man->set_scaling(Vec3(7,7,7));
+     man->set_color(Vec3(0.5, 0.5, 0.5));
+     man->set_scaling(Vec3(1,1,1));
     // man->set_position(Vec3(100, 0, 100));
 
     // Create an agent with a different 3D model:
@@ -26,11 +26,12 @@ void ProjectOne::setup()
     Agent::add_model("Assets\\ball.sdkmesh", Agent::AgentModel::Ball);
     Agent::add_model("Assets\\hut.sdkmesh", Agent::AgentModel::Hut);
     // 3. Create the agent, giving it the correct AgentModel type.
-    auto tree = agents->create_behavior_agent("ExampleAgent2", BehaviorTreeTypes::Example, Agent::AgentModel::Tree);
+    auto ball = agents->create_behavior_agent("ExampleAgent2", BehaviorTreeTypes::corner, Agent::AgentModel::Ball);
     // 4. (optional) You can also set the pitch of the model, if you want it to be rotated differently
-    tree->set_pitch(PI / 2);
+    ball->set_pitch(PI / 3);
     // 5. (optional) Set other aspects to make it start out correctly
-    tree->set_color(Vec3(0, 0.5, 0));   // Set the tree to green
+    ball->set_scaling(Vec3(1, 1, 1));
+    ball->set_color(Vec3(1, 0, 0));   // Set the tree to green
 
     // You can technically load any map you want, even create your own map file,
     // but behavior agents won't actually avoid walls or anything special, unless you code
