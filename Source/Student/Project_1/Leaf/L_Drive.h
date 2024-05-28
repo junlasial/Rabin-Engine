@@ -15,4 +15,6 @@ private:
     Vec3 Checkpoint_4;
     Vec3 Checkpoint_5;
     Vec3 Checkpoint_6;
+
+    Vec3 CurrentPosition;
 };

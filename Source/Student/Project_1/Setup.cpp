@@ -51,7 +51,7 @@ void ProjectOne::setup()
     //car1->set_position(Vec3(30, 0, 80));
 
 
-    auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::gtestubg, Agent::AgentModel::Car);
+    auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive, Agent::AgentModel::Car);
     // 5. (optional) Set other aspects to make it start out correctly
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
