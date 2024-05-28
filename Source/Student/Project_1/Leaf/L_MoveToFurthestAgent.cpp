@@ -48,6 +48,7 @@ void L_MoveToFurthestAgent::on_enter()
 void L_MoveToFurthestAgent::on_update(float dt)
 {
     const auto result = agent->move_toward_point(targetPoint, dt);
+    
 
     if (result == true)
     {

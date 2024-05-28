@@ -181,6 +181,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="L_MoveToCheckPoint2.h" />
+    <ClInclude Include="L_MoveToCheckPoint3.h" />
+    <ClInclude Include="L_MoveToNearestCar.h" />
     <ClInclude Include="L_MoveToCorner.h" />
     <ClInclude Include="Source\Framework\Agent\Agent.h" />
     <ClInclude Include="Source\Framework\Agent\AgentOrganizer.h" />
@@ -253,11 +256,17 @@
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_RandomSelector.h" />
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_Selector.h" />
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_Sequencer.h" />
+    <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckForCarEnter.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_Delay.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_InvertedRepeater.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_RepeatFourTimes.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Idle.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckPoint1.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint4.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint5.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint6.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToFurthestAgent.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToMouseClick.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToRandomPosition.h" />
@@ -266,6 +275,9 @@
     <ClInclude Include="Source\Student\Project_2\P2_Pathfinding.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="L_MoveToCheckPoint2.cpp" />
+    <ClCompile Include="L_MoveToCheckPoint3.cpp" />
+    <ClCompile Include="L_MoveToNearestCar.cpp" />
     <ClCompile Include="L_MoveToCorner.cpp" />
     <ClCompile Include="Source\Framework\Agent\Agent.cpp" />
     <ClCompile Include="Source\Framework\Agent\AgentOrganizer.cpp" />
@@ -334,11 +346,17 @@
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_RandomSelector.cpp" />
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_Selector.cpp" />
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_Sequencer.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckForCarEnter.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_Delay.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_InvertedRepeater.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_RepeatFourTimes.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Idle.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckPoint1.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint4.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint5.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint6.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToFurthestAgent.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToMouseClick.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToRandomPosition.cpp" />

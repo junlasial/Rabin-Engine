@@ -23,6 +23,7 @@ void L_CheckMouseClick::on_update(float dt)
             // write the world position into the blackboard
             auto &bb = agent->get_blackboard();
             bb.set_value("Click Position", worldPos.first);
+            
 
             on_success();
         }

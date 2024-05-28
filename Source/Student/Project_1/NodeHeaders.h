@@ -17,7 +17,7 @@
 #include "Decorator/D_RepeatFourTimes.h"
 
 // Student Decorator Nodes
-
+#include "Decorator/D_CheckForCarEnter.h"
 
 // Example Leaf Nodes
 #include "Leaf/L_CheckMouseClick.h"
@@ -30,3 +30,11 @@
 // Student Leaf Nodes
 
 #include "Leaf/L_MoveToCorner.h"
+#include "Leaf/L_MoveToNearestCar.h"
+#include "Leaf/L_MoveToCheckPoint1.h"
+#include "Leaf/L_MoveToCheckPoint2.h"
+#include "Leaf/L_MoveToCheckPoint3.h"
+#include "Leaf/L_MoveToCheckPoint4.h"
+#include "Leaf/L_MoveToCheckPoint5.h"
+#include "Leaf/L_MoveToCheckPoint6.h"
+#include "Leaf/L_CheckCurrentCheckPoint.h"
