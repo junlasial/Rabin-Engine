@@ -129,15 +129,6 @@ void ProjectOne::setup()
 
     }
 
-  /*  for (int i = 0; i < 20; i++) {
-
-        for (int j = 8; j < 12; j++) {
-
-            terrain->pathLayer.set_value(i, j, Colors::Black);
-        }
-
-    }*/
-
 
     terrain->pathLayer.set_value(1, 1, Colors::White);
     terrain->pathLayer.set_value(2, 1, Colors::White);
