@@ -263,6 +263,7 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_ChangeTraffic.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_Drive.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Idle.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckPoint1.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint4.h" />
@@ -354,6 +355,7 @@
     <ClCompile Include="Source\Student\Project_1\Leaf\L_ChangeTraffic.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_Drive.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Idle.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckPoint1.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckpoint4.cpp" />
