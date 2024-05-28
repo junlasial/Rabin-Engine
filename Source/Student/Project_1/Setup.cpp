@@ -8,7 +8,7 @@ void ProjectOne::setup()
 
     
     // Create an agent (using the default "Agent::AgentModel::Man" model)
-    auto trafficlight = agents->create_behavior_agent("TrafficLight", BehaviorTreeTypes::Idle);
+    auto trafficlight = agents->create_behavior_agent("TrafficLight", BehaviorTreeTypes::TrafficLight);
 
     // You can change properties here or at runtime from a behavior tree leaf node
     // Look in Agent.h for all of the setters, like these:

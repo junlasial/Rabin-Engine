@@ -1,0 +1,4 @@
+TREENAME(TrafficLight)
+TREENODE(C_Selector, 0)
+TREENODE(L_ChangeTraffic, 1)
+TREENODE(L_ChangeTraffic, 1)

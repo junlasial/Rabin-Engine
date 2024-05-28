@@ -5,3 +5,4 @@
 #include "../Source/Student/Project_1/Trees/gtestubg.bht"
 #include "../Source/Student/Project_1/Trees/Idle.bht"
 #include "../Source/Student/Project_1/Trees/MoveToNearestCar.bht"
+#include "../Source/Student/Project_1/Trees/TrafficLight.bht"
