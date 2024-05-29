@@ -257,6 +257,7 @@
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_Selector.h" />
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_Sequencer.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckForCarEnter.h" />
+    <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckReachMall.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_Delay.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_InvertedRepeater.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_RepeatFourTimes.h" />
@@ -349,6 +350,7 @@
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_Selector.cpp" />
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_Sequencer.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckForCarEnter.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckReachMall.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_Delay.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_InvertedRepeater.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_RepeatFourTimes.cpp" />

@@ -78,11 +78,12 @@ void ProjectOne::setup()
     hut->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
     hut->set_position(Vec3(80, 0, 69));
 
-    auto ball = agents->create_behavior_agent("ball", BehaviorTreeTypes::Idle, Agent::AgentModel::Ball);
+    auto tree = agents->create_behavior_agent("tree", BehaviorTreeTypes::Idle, Agent::AgentModel::Tree);
     // 5. (optional) Set other aspects to make it start out correctly
-    ball->set_scaling(Vec3(0.8, 0.8, 0.8));
-    ball->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
-    ball->set_position(Vec3(75, 0, 18));
+    tree->set_scaling(Vec3(2, 2, 2));
+    tree->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
+    tree->set_position(Vec3(101, 0, 10));
+    tree->set_pitch(PI/2);
 
   
     // You can technically load any map you want, even create your own map file,

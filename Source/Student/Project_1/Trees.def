@@ -7,4 +7,5 @@
 #include "../Source/Student/Project_1/Trees/Idle.bht"
 #include "../Source/Student/Project_1/Trees/MoveToNearestCar.bht"
 #include "../Source/Student/Project_1/Trees/newdrive.bht"
+#include "../Source/Student/Project_1/Trees/testing1233.bht"
 #include "../Source/Student/Project_1/Trees/TrafficLight.bht"
