@@ -361,6 +361,9 @@
     <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckReachMall.h">
       <Filter>Source\Student\Project_1\Decorator</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_GoShopping.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework\Main.cpp">
@@ -623,6 +626,9 @@
     </ClCompile>
     <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckReachMall.cpp">
       <Filter>Source\Student\Project_1\Decorator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_GoShopping.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

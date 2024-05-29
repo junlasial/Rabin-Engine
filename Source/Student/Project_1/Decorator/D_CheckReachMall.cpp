@@ -21,11 +21,17 @@ void D_CheckReachMall::on_enter()
                 const auto& agentPos = a->get_position();
                 const float distance = Vec3::Distance(currPos, agentPos);
 
-                if (distance <= 20)
+                if (distance >= 15)
                 {
-                    reachMall = true;
-                    std::cout << "Reached Mall" << std::endl;
+                    reachMall = false;
+                  //  std::cout << "Have not reached" << std::endl;
                     BehaviorNode::on_enter();
+                }
+
+                else {
+
+                    reachMall = true;
+
                 }
             }
             
@@ -33,11 +39,16 @@ void D_CheckReachMall::on_enter()
                 const auto& agentPos = a->get_position();
                 const float distance = Vec3::Distance(currPos, agentPos);
 
-                if (distance <= 20)
+                if (distance >= 15)
                 {
-                    reachMall = true;
-                    std::cout << "Reached Mall" << std::endl;
+                    reachMall = false;
+                    //std::cout << "Have not reached" << std::endl;
                     BehaviorNode::on_enter();
+                }
+
+                else {
+
+                    reachMall = true;
                 }
             }
 
@@ -66,10 +77,10 @@ void D_CheckReachMall::on_update(float dt)
     else
     {
 
-       
+        on_failure();
         // If not entered a car, do nothing or perform other actions as needed
         // For example, you might want to log some message indicating that entering a car condition wasn't met.
-        std::cout << "Not reached mall" << std::endl;
+        //std::cout << "Not reached mall" << std::endl;
     }
 
     // Optionally, you can still display leaf text regardless of entering a car or not

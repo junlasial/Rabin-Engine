@@ -19,14 +19,26 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto driver1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::MoveToNearestCar);
+     auto driver1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::checkingnew);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
      driver1->set_color(Vec3(1, 1, 1));
      driver1->set_scaling(Vec3(1, 0.8, 1));
      driver1->set_position(Vec3(30, 0, 60));
-     driver1->set_movement_speed(15);
+     driver1->set_movement_speed(30);
+
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto driver2 = agents->create_behavior_agent("Driver2", BehaviorTreeTypes::Idle);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     driver2->set_color(Vec3(1, 1, 1));
+     driver2->set_scaling(Vec3(1, 0.8, 1));
+     driver2->set_position(Vec3(80, 0, 20));
+     driver2->set_movement_speed(30);
+
 
 
      //// Create an agent (using the default "Agent::AgentModel::Man" model)
@@ -67,7 +79,7 @@ void ProjectOne::setup()
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
     car2->set_position(Vec3(5, 0, 90));
-    car2->set_movement_speed(10.0);
+    car2->set_movement_speed(20.0);
     
     
 
@@ -76,13 +88,14 @@ void ProjectOne::setup()
     // 5. (optional) Set other aspects to make it start out correctly
     hut->set_scaling(Vec3(0.8, 0.8, 0.8));
     hut->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
-    hut->set_position(Vec3(80, 0, 69));
+    hut->set_position(Vec3(75, 0, 73));
+    hut->set_yaw(PI/2 );
 
     auto tree = agents->create_behavior_agent("tree", BehaviorTreeTypes::Idle, Agent::AgentModel::Tree);
     // 5. (optional) Set other aspects to make it start out correctly
     tree->set_scaling(Vec3(2, 2, 2));
     tree->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
-    tree->set_position(Vec3(101, 0, 10));
+    tree->set_position(Vec3(90, 0, -2));
     tree->set_pitch(PI/2);
 
   

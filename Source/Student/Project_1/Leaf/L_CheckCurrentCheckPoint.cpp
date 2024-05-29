@@ -18,6 +18,7 @@ void L_CheckCurrentCheckPoint::on_update(float dt)
         bb.set_value("CheckPoint4", Vec3{ 90,0,90 });
         bb.set_value("CheckPoint5", Vec3{ 45,0,10 });
         bb.set_value("CheckPoint6", Vec3{ 45,0,90 });
+        bb.set_value("ShoppingMall", Vec3{ 75, 0, 73 });
         
 
 

@@ -41,3 +41,4 @@
 #include "Leaf/L_CheckCurrentCheckPoint.h"
 #include "Leaf/L_ChangeTraffic.h"
 #include "Leaf/L_Drive.h"
+#include "Leaf/L_GoShopping.h"

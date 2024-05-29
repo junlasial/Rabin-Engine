@@ -1,0 +1,7 @@
+TREENAME(walking)
+TREENODE(C_Selector, 0)
+TREENODE(D_CheckReachMall, 1)
+TREENODE(C_Selector, 2)
+TREENODE(L_MoveToCheckPoint1, 3)
+TREENODE(L_MoveToCheckPoint2, 3)
+TREENODE(L_Idle, 1)
