@@ -19,29 +19,47 @@ void L_GoShopping::on_update(float dt)
 {
     static bool waitingForSuccess = false;
     static float waitTime = 0.0f;
+     auto& bb = agent->get_blackboard();
 
-    if (!waitingForSuccess)
-    {
-        const auto result = agent->move_toward_point(targetPoint, dt);
+    if (bb.get_value<bool>("GoMall") == true) {
 
-        if (result == true)
+      
+        if (!waitingForSuccess)
         {
-            // Start the waiting period
-            waitingForSuccess = true;
-            waitTime = 0.0f; // Reset the wait time
+
+
+            const auto result = agent->move_toward_point(targetPoint, dt);
+
+            if (result == true)
+            {
+               
+                // Start the waiting period
+                waitingForSuccess = true;
+                waitTime = 0.0f; // Reset the wait time
+            }
         }
-    }
-    else
-    {
-        // Accumulate the wait time
-        waitTime += dt;
-        if (waitTime >= 15.0f)
+        else
         {
-            // Wait time has elapsed
-            on_success();
-            waitingForSuccess = false; // Reset the state for the next target
+            // Accumulate the wait time
+            waitTime += dt;
+            if (waitTime >= 15.0f)
+            {
+           
+              
+                // Wait time has elapsed
+                on_success();
+                waitingForSuccess = false; // Reset the state for the next target
+            }
         }
+
     }
+
+
+    else {
+
+        on_failure();
+    }
+   
 
     display_leaf_text();
 }
