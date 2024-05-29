@@ -149,16 +149,12 @@ void ProjectOne::setup()
 
     terrain->pathLayer.set_value(1, 1, Colors::White);
     terrain->pathLayer.set_value(2, 1, Colors::White);
-
     terrain->pathLayer.set_value(5, 1, Colors::White);
     terrain->pathLayer.set_value(6, 1, Colors::White);
-
     terrain->pathLayer.set_value(9, 1, Colors::White);
     terrain->pathLayer.set_value(10, 1, Colors::White);
-
     terrain->pathLayer.set_value(13, 1, Colors::White);
     terrain->pathLayer.set_value(14, 1, Colors::White);
-
     terrain->pathLayer.set_value(17, 1, Colors::White);
     terrain->pathLayer.set_value(18, 1, Colors::White);
 
@@ -167,15 +163,49 @@ void ProjectOne::setup()
 
     terrain->pathLayer.set_value(1, 4, Colors::White);
     terrain->pathLayer.set_value(1, 5, Colors::White);
-
     terrain->pathLayer.set_value(1, 8, Colors::White);
     terrain->pathLayer.set_value(1, 9, Colors::White);
-
     terrain->pathLayer.set_value(1, 12, Colors::White);
     terrain->pathLayer.set_value(1, 13, Colors::White);
-
     terrain->pathLayer.set_value(1, 16, Colors::White);
     terrain->pathLayer.set_value(1, 17, Colors::White);
+
+
+
+    terrain->pathLayer.set_value(3, 18, Colors::White);
+    terrain->pathLayer.set_value(4, 18, Colors::White);
+    terrain->pathLayer.set_value(7, 18, Colors::White);
+    terrain->pathLayer.set_value(8, 18, Colors::White);
+    terrain->pathLayer.set_value(11, 18, Colors::White);
+    terrain->pathLayer.set_value(12, 18, Colors::White);
+    terrain->pathLayer.set_value(15, 18, Colors::White);
+    terrain->pathLayer.set_value(16, 18, Colors::White);
+
+
+
+
+    terrain->pathLayer.set_value(18, 3, Colors::White);
+    terrain->pathLayer.set_value(18, 4, Colors::White);
+    terrain->pathLayer.set_value(18, 7, Colors::White);
+    terrain->pathLayer.set_value(18, 8, Colors::White);
+    terrain->pathLayer.set_value(18, 11, Colors::White);
+    terrain->pathLayer.set_value(18, 12, Colors::White);
+    terrain->pathLayer.set_value(18, 15, Colors::White);
+    terrain->pathLayer.set_value(18, 16, Colors::White);
+
+
+
+    terrain->pathLayer.set_value(9, 3, Colors::White);
+    terrain->pathLayer.set_value(9, 4, Colors::White);
+    terrain->pathLayer.set_value(9, 7, Colors::White);
+    terrain->pathLayer.set_value(9, 8, Colors::White);
+    terrain->pathLayer.set_value(9, 11, Colors::White);
+    terrain->pathLayer.set_value(9, 12, Colors::White);
+    terrain->pathLayer.set_value(9, 15, Colors::White);
+    terrain->pathLayer.set_value(9, 16, Colors::White);
+
+
+
 
 
     // Camera position can be modified from this default
