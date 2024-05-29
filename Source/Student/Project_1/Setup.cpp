@@ -19,14 +19,25 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto man1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::MoveToNearestCar);
+     auto driver1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::MoveToNearestCar);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     man1->set_color(Vec3(1, 1, 1));
-     man1->set_scaling(Vec3(1, 1, 1));
-     man1->set_position(Vec3(30, 0, 60));
-     
+     driver1->set_color(Vec3(1, 1, 1));
+     driver1->set_scaling(Vec3(1, 0.8, 1));
+     driver1->set_position(Vec3(30, 0, 60));
+     driver1->set_movement_speed(15);
+
+
+     //// Create an agent (using the default "Agent::AgentModel::Man" model)
+     //auto driver2 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::MoveToNearestCar);
+
+     //// You can change properties here or at runtime from a behavior tree leaf node
+     //// Look in Agent.h for all of the setters, like these:
+     //driver2->set_color(Vec3(1, 1, 1));
+     //driver2->set_scaling(Vec3(1, 1, 1));
+     //driver2->set_position(Vec3(70, 0, 30));
+     //
     // Create an agent with a different 3D model:
     // 1. (optional) Add a new 3D model to the framework other than the ones provided:
     //    A. Find a ".sdkmesh" model or use https://github.com/walbourn/contentexporter
@@ -41,14 +52,14 @@ void ProjectOne::setup()
     Agent::add_model("Assets\\hut.sdkmesh", Agent::AgentModel::Hut);
 
 
-    // 3. Create the agent, giving it the correct AgentModel type.
-    //auto car1 = agents->create_behavior_agent("Player Car", BehaviorTreeTypes::carmove, Agent::AgentModel::Car);
+    // //3. Create the agent, giving it the correct AgentModel type.
+    //auto car1 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive, Agent::AgentModel::Car);
     //// 4. (optional) You can also set the pitch of the model, if you want it to be rotated differently
   
     //// 5. (optional) Set other aspects to make it start out correctly
     //car1->set_scaling(Vec3(1, 1, 1));
     //car1->set_color(Vec3(1, 0, 0));   // Set the tree to green
-    //car1->set_position(Vec3(30, 0, 80));
+    //car1->set_position(Vec3(90, 0, 10));
 
 
     auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive, Agent::AgentModel::Car);
@@ -56,17 +67,22 @@ void ProjectOne::setup()
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
     car2->set_position(Vec3(5, 0, 90));
+    car2->set_movement_speed(10.0);
     
     
 
 
-    //auto hut = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
-    //// 5. (optional) Set other aspects to make it start out correctly
-    //hut->set_scaling(Vec3(0.8, 0.8, 0.8));
-    //hut->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
-    //hut->set_position(Vec3(80, 0, 0));
+    auto hut = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
+    // 5. (optional) Set other aspects to make it start out correctly
+    hut->set_scaling(Vec3(0.8, 0.8, 0.8));
+    hut->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
+    hut->set_position(Vec3(80, 0, 69));
 
-
+    auto ball = agents->create_behavior_agent("ball", BehaviorTreeTypes::Idle, Agent::AgentModel::Ball);
+    // 5. (optional) Set other aspects to make it start out correctly
+    ball->set_scaling(Vec3(0.8, 0.8, 0.8));
+    ball->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
+    ball->set_position(Vec3(75, 0, 18));
 
   
     // You can technically load any map you want, even create your own map file,

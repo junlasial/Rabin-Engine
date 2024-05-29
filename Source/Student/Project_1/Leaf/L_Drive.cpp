@@ -35,10 +35,16 @@ void L_Drive::on_enter()
         int choice = distrib(gen);
 
 
+  
+ 
+
 
         if (distanceSquared(CurrentPosition, Checkpoint_1) < thresholdSquared) {
 
+
             targetPoint = Checkpoint_2;
+
+            
         }
         else if (distanceSquared(CurrentPosition, Checkpoint_2) < thresholdSquared) {
             targetPoint = Checkpoint_5;
