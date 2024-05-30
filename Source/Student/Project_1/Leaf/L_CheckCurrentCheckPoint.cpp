@@ -25,7 +25,7 @@ void L_CheckCurrentCheckPoint::on_update(float dt)
     if (distance <= range) {
 
         invert = !invert;
-        std::cout << "Invert is : " <<invert<< std::endl;
+     
         bb.set_value("GoMall", invert);
 
 

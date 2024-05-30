@@ -80,7 +80,8 @@ void ProjectOne::setup()
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
     car2->set_position(Vec3(5, 0, 90));
     car2->set_movement_speed(20.0);
-    
+
+   
     
 
 

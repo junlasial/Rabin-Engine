@@ -10,7 +10,7 @@ void L_ChangeTraffic::on_enter()
     agent->set_color(Vec3{ 1,0,0 });
 
     // Set initial timer values
-    redTimer = 5.0f;
+    redTimer = 10.0f;
     greenTimer = 10.0f;
     yellowTimer = 1.0f;
 
@@ -20,6 +20,10 @@ void L_ChangeTraffic::on_enter()
 
 void L_ChangeTraffic::on_update(float dt)
 {
+    // get a list of all current agents
+    const auto& allAgents = agents->get_all_agents();
+    // and our agent's position
+    const auto& currPos = agent->get_position();
 
     auto& bb = agent->get_blackboard();
 
@@ -65,6 +69,57 @@ void L_ChangeTraffic::on_update(float dt)
             redTimer = 5.0f;
         }
     }
+
+    for (const auto& a : allAgents)
+    {
+
+        // make sure it's not our agent
+        if (a != agent)
+        {
+            if (a->getAgentModel() == Agent::AgentModel::Car) {
+                const auto& agentPos = a->get_position();
+                const float distance = Vec3::Distance(currPos, agentPos);
+                Vec3 currLight = bb.get_value<Vec3>("CurrentLight");
+
+                if (distance <= 15) {
+
+
+                    if (currLight == Vec3(1,0,0)) {
+                        a->set_movement_speed(0);
+                      
+           
+                    }
+                    
+                    
+                  
+                    else if (currLight == Vec3(1, 1, 0)) {
+                        a->set_movement_speed(25);
+                    }
+
+                    else {
+                        a->set_movement_speed(20);
+
+                    }
+
+
+                }
+
+                
+
+
+            }
+
+
+
+
+        }
+
+
+
+    }
+
+
+
 
     display_leaf_text();
 }
