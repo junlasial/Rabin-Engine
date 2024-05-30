@@ -36,7 +36,9 @@ void D_CheckReachMall::on_enter()
 
                     reachMall = true;
                    
-                    a->set_position(Vec3(agentPos.x - 1, agentPos.y, agentPos.z - 1));
+                    a->set_position(Vec3(agentPos.x - 5, agentPos.y, agentPos.z - 5));
+                    a->set_pitch(PI/20);
+                    a->set_color(Vec3(1, 0, 0));
 
                 }
             }
