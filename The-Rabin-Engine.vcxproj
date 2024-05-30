@@ -256,6 +256,7 @@
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_RandomSelector.h" />
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_Selector.h" />
     <ClInclude Include="Source\Student\Project_1\ControlFlow\C_Sequencer.h" />
+    <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckCollision.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckForCarEnter.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_CheckReachMall.h" />
     <ClInclude Include="Source\Student\Project_1\Decorator\D_Delay.h" />
@@ -350,6 +351,7 @@
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_RandomSelector.cpp" />
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_Selector.cpp" />
     <ClCompile Include="Source\Student\Project_1\ControlFlow\C_Sequencer.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckCollision.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckForCarEnter.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_CheckReachMall.cpp" />
     <ClCompile Include="Source\Student\Project_1\Decorator\D_Delay.cpp" />

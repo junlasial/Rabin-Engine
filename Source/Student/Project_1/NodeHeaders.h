@@ -19,6 +19,7 @@
 // Student Decorator Nodes
 #include "Decorator/D_CheckForCarEnter.h"
 #include "Decorator/D_CheckReachMall.h"
+#include "Decorator/D_CheckCollision.h"
 
 // Example Leaf Nodes
 #include "Leaf/L_CheckMouseClick.h"

@@ -8,6 +8,8 @@ REGISTER_DECORATOR(D_InvertedRepeater, "D_InvertedRepeater")
 REGISTER_DECORATOR(D_RepeatFourTimes, "D_RepeatFourTimes")
 REGISTER_DECORATOR(D_CheckForCarEnter, "D_CheckForCarEnter")
 REGISTER_DECORATOR(D_CheckReachMall, "D_CheckReachMall")
+REGISTER_DECORATOR(D_CheckCollision, "D_CheckCollision")
+
 
 REGISTER_LEAF(L_CheckMouseClick, "L_CheckMouseClick")
 REGISTER_LEAF(L_Idle, "L_Idle")
