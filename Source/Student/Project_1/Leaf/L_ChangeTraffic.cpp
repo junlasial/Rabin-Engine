@@ -10,8 +10,8 @@ void L_ChangeTraffic::on_enter()
     agent->set_color(Vec3{ 1,0,0 });
 
     // Set initial timer values
-    redTimer = 10.0f;
-    greenTimer = 10.0f;
+    redTimer = 8.0f;
+    greenTimer = 5.0f;
     yellowTimer = 1.0f;
 
 
@@ -38,7 +38,7 @@ void L_ChangeTraffic::on_update(float dt)
         {
             // Switch to green
             agent->set_color(Vec3{ 0,1,0 });
-            greenTimer = 10.0f;
+            greenTimer = 5.0f;
         }
     }
     else if (greenTimer > 0.0f)
@@ -66,7 +66,7 @@ void L_ChangeTraffic::on_update(float dt)
         {
             // Switch back to red and reset timers
             agent->set_color(Vec3{ 1,0,0 });
-            redTimer = 5.0f;
+            redTimer = 8.0f;
         }
     }
 
@@ -81,10 +81,14 @@ void L_ChangeTraffic::on_update(float dt)
                 const float distance = Vec3::Distance(currPos, agentPos);
                 Vec3 currLight = bb.get_value<Vec3>("CurrentLight");
 
-                if (distance <= 15) {
+          
+
+                if (distance <= 10) {
 
 
                     if (currLight == Vec3(1,0,0)) {
+
+                        
                         a->set_movement_speed(0);
                       
            
@@ -97,7 +101,7 @@ void L_ChangeTraffic::on_update(float dt)
                     }
 
                     else {
-                        a->set_movement_speed(20);
+                        a->set_movement_speed(15);
 
                     }
 

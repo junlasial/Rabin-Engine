@@ -66,13 +66,9 @@ void L_Drive::on_enter()
             }
         }
         else if (distanceSquared(CurrentPosition, Checkpoint_6) < thresholdSquared) {
-            if (choice == 0) {
-                targetPoint = Checkpoint_5;
-            }
-
-            else {
+        
                 targetPoint = Checkpoint_1;
-            }
+            
         }
 
 
