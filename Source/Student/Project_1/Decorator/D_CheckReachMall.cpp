@@ -14,6 +14,9 @@ void D_CheckReachMall::on_enter()
 
     for (const auto& a : allAgents)
     {
+
+
+
         // make sure it's not our agent
         if (a != agent)
         {
@@ -24,6 +27,7 @@ void D_CheckReachMall::on_enter()
                 if (distance >= 15)
                 {
                     reachMall = false;
+                    
                   //  std::cout << "Have not reached" << std::endl;
                     BehaviorNode::on_enter();
                 }
@@ -31,10 +35,13 @@ void D_CheckReachMall::on_enter()
                 else {
 
                     reachMall = true;
+                   
+                    a->set_position(Vec3(agentPos.x - 1, agentPos.y, agentPos.z - 1));
 
                 }
             }
-            
+
+
             if (a->getAgentModel() == Agent::AgentModel::Man) {
                 const auto& agentPos = a->get_position();
                 const float distance = Vec3::Distance(currPos, agentPos);
@@ -52,7 +59,6 @@ void D_CheckReachMall::on_enter()
                 }
             }
 
-          
 
         }
     }

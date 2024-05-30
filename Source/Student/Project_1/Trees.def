@@ -1,6 +1,7 @@
 #include "../Source/Student/Project_1/Trees/carmove.bht"
 #include "../Source/Student/Project_1/Trees/checking.bht"
 #include "../Source/Student/Project_1/Trees/checkingnew.bht"
+#include "../Source/Student/Project_1/Trees/checkingnew1.bht"
 #include "../Source/Student/Project_1/Trees/control.bht"
 #include "../Source/Student/Project_1/Trees/corner.bht"
 #include "../Source/Student/Project_1/Trees/DriveCar.bht"

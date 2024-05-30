@@ -19,7 +19,7 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto driver1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::checkingnew);
+     auto driver1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::checkingnew1);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
