@@ -28,6 +28,10 @@ void ProjectOne::setup()
     trafficlight2->set_yaw(PI);
 
 
+
+
+
+
      // Create an agent (using the default "Agent::AgentModel::Man" model)
      auto driver1 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::checkingnew1);
 
@@ -83,14 +87,14 @@ void ProjectOne::setup()
     car1->set_color(Vec3(1, 0.3, 0.8));   // Set the tree to green
     car1->set_position(Vec3(90, 0, 90));
     car1->set_yaw(3 * PI / 2);
-    car1->set_movement_speed(10.0);
+    car1->set_movement_speed(15.0);
 
     auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
     // 5. (optional) Set other aspects to make it start out correctly
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
     car2->set_position(Vec3(5, 0, 90));
-    car2->set_movement_speed(25.0);
+    car2->set_movement_speed(20.0);
   
 
     //auto car3 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);

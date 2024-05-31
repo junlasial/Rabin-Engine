@@ -1,36 +1,44 @@
 #include <pch.h>
 #include "L_ChangeTraffic.h"
+#include <random>
 
-L_ChangeTraffic::L_ChangeTraffic() : timer(0.0f)
+// Constructor
+L_ChangeTraffic::L_ChangeTraffic() : timer(0.0f), redTimer(0.0f), greenTimer(0.0f), yellowTimer(0.0f)
 {}
 
+// on_enter method
 void L_ChangeTraffic::on_enter()
 {
+    // Create a random engine and distribution
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(1.0, 4.0);
+
     // Start with red
     agent->set_color(Vec3{ 1,0,0 });
 
-    // Set initial timer values
-    redTimer = 8.0f;
-    greenTimer = 5.0f;
-    yellowTimer = 1.0f;
-
+    // Set initial timer values with random offsets, cast to float
+    redTimer = 4.0f + static_cast<float>(dis(gen));
+    greenTimer = 3.0f + static_cast<float>(dis(gen));
+    yellowTimer = 3.0f + static_cast<float>(dis(gen));
 
     BehaviorNode::on_leaf_enter();
 }
 
+// on_update method
 void L_ChangeTraffic::on_update(float dt)
 {
-    // get a list of all current agents
+    // Get a list of all current agents
     const auto& allAgents = agents->get_all_agents();
-    // and our agent's position
+    // Our agent's position
     const auto& currPos = agent->get_position();
 
+    // Blackboard
     auto& bb = agent->get_blackboard();
 
     if (redTimer > 0.0f)
     {
-
-        bb.set_value("CurrentLight", Vec3{1,0,0});
+        bb.set_value("CurrentLight", Vec3{ 1,0,0 });
 
         // Red phase
         redTimer -= dt;
@@ -43,8 +51,8 @@ void L_ChangeTraffic::on_update(float dt)
     }
     else if (greenTimer > 0.0f)
     {
-
         bb.set_value("CurrentLight", Vec3{ 0,1,0 });
+
         // Green phase
         greenTimer -= dt;
         if (greenTimer <= 0.0f)
@@ -56,9 +64,7 @@ void L_ChangeTraffic::on_update(float dt)
     }
     else
     {
-
         bb.set_value("CurrentLight", Vec3{ 1,1,0 });
-
 
         // Yellow phase
         yellowTimer -= dt;
@@ -72,8 +78,7 @@ void L_ChangeTraffic::on_update(float dt)
 
     for (const auto& a : allAgents)
     {
-
-        // make sure it's not our agent
+        // Make sure it's not our agent
         if (a != agent)
         {
             if (a->getAgentModel() == Agent::AgentModel::Car) {
@@ -81,50 +86,20 @@ void L_ChangeTraffic::on_update(float dt)
                 const float distance = Vec3::Distance(currPos, agentPos);
                 Vec3 currLight = bb.get_value<Vec3>("CurrentLight");
 
-          
-
                 if (distance <= 10) {
-
-
-                    if (currLight == Vec3(1,0,0)) {
-
-                        
+                    if (currLight == Vec3(1, 0, 0)) {
                         a->set_movement_speed(0);
-                      
-           
                     }
-                    
-                    
-                  
                     else if (currLight == Vec3(1, 1, 0)) {
-                        a->set_movement_speed(30);
+                        a->set_movement_speed(15);
                     }
-
                     else {
-                        a->set_movement_speed(25);
-
+                        a->set_movement_speed(23);
                     }
-
-
                 }
-
-                
-
-
             }
-
-
-
-
         }
-
-
-
     }
-
-
-
 
     display_leaf_text();
 }
-
