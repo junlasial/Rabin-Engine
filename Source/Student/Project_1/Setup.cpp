@@ -57,7 +57,7 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
+     auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::Idle);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
@@ -68,7 +68,7 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto Footballer2 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
+     auto Footballer2 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::Idle);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
@@ -149,14 +149,14 @@ void ProjectOne::setup()
     auto hut = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
     // 5. (optional) Set other aspects to make it start out correctly
     hut->set_scaling(Vec3(0.8, 0.8, 0.8));
-    hut->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
+    hut->set_color(Vec3(2.9, 1.5, 1.9));   // Set the tree to green
     hut->set_position(Vec3(75, 0, 73));
     hut->set_yaw(PI/2 );
 
     auto tree = agents->create_behavior_agent("tree", BehaviorTreeTypes::Idle, Agent::AgentModel::Tree);
     // 5. (optional) Set other aspects to make it start out correctly
     tree->set_scaling(Vec3(2, 2, 2));
-    tree->set_color(Vec3(0.5, 0.5, 0.5));   // Set the tree to green
+    tree->set_color(Vec3(0, 0.8, 0.1));   // Set the tree to green
     tree->set_position(Vec3(90, 0, -2));
     tree->set_pitch(PI/2);
 
@@ -296,7 +296,7 @@ void ProjectOne::setup()
         for (int j = 11; j < 17; j++) {
 
 
-            terrain->pathLayer.set_value(j, i, Colors::ForestGreen);
+            terrain->pathLayer.set_value(j, i, Colors::SaddleBrown);
 
         }
     }

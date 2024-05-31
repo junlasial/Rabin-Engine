@@ -267,6 +267,7 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Drive.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_FootballMovement.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_GoCar.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_GoShopping.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Idle.h" />
@@ -365,6 +366,7 @@
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Drive.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_FootballMovement.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_GoCar.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_GoShopping.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Idle.cpp" />

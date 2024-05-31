@@ -24,7 +24,10 @@ void L_CheckMouseClick::on_update(float dt)
             auto &bb = agent->get_blackboard();
             bb.set_value("Click Position", worldPos.first);
             
+  /*          Vec3 mouse= bb.get_value<Vec3>("Click Position");
 
+            std::cout << "X Position: "<< mouse.x << std::endl;
+            std::cout << "Z Position: " << mouse.z << std::endl;*/
             on_success();
         }
         else

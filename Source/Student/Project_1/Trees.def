@@ -12,6 +12,7 @@
 #include "../Source/Student/Project_1/Trees/FootBaller.bht"
 #include "../Source/Student/Project_1/Trees/gtestubg.bht"
 #include "../Source/Student/Project_1/Trees/Idle.bht"
+#include "../Source/Student/Project_1/Trees/mouse.bht"
 #include "../Source/Student/Project_1/Trees/MoveToNearestCar.bht"
 #include "../Source/Student/Project_1/Trees/newdrive.bht"
 #include "../Source/Student/Project_1/Trees/newdrive1.bht"
