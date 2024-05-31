@@ -24,8 +24,8 @@ void ProjectOne::setup()
     // Look in Agent.h for all of the setters, like these:
     trafficlight2->set_color(Vec3(0, 1, 0));
     trafficlight2->set_scaling(Vec3(1, 3, 3));
-    trafficlight2->set_position(Vec3(58, 0, 83));
-    trafficlight2->set_yaw(PI);
+    trafficlight2->set_position(Vec3(58, 0, 98));
+    trafficlight2->set_yaw(PI/4);
 
 
 
@@ -239,6 +239,30 @@ void ProjectOne::setup()
     terrain->pathLayer.set_value(9, 12, Colors::White);
     terrain->pathLayer.set_value(9, 15, Colors::White);
     terrain->pathLayer.set_value(9, 16, Colors::White);
+
+
+    for (int i = 3; i < 17;  i++) {
+
+        for (int j = 3; j < 8; j++) {
+
+
+            terrain->pathLayer.set_value(j, i, Colors::LawnGreen);
+
+        }
+    }
+
+
+    for (int i = 3; i < 17; i++) {
+
+        for (int j = 11; j < 17; j++) {
+
+
+            terrain->pathLayer.set_value(j, i, Colors::LawnGreen);
+
+        }
+    }
+
+
 
 
 

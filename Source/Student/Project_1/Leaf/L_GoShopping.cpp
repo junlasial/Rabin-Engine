@@ -42,7 +42,7 @@ void L_GoShopping::on_update(float dt)
         {
             // Accumulate the wait time
             waitTime += dt;
-            if (waitTime >= 5.0f)
+            if (waitTime >= 3.0f)
             {
            
               

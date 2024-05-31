@@ -12,15 +12,15 @@ void L_ChangeTraffic::on_enter()
     // Create a random engine and distribution
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dis(1.0, 4.0);
+    std::uniform_real_distribution<double> dis(2.0, 5.0);
 
     // Start with red
     agent->set_color(Vec3{ 1,0,0 });
 
     // Set initial timer values with random offsets, cast to float
-    redTimer = 4.0f + static_cast<float>(dis(gen));
+    redTimer = 3.0f + static_cast<float>(dis(gen));
     greenTimer = 3.0f + static_cast<float>(dis(gen));
-    yellowTimer = 3.0f + static_cast<float>(dis(gen));
+    yellowTimer = 1.0f + static_cast<float>(dis(gen));
 
     BehaviorNode::on_leaf_enter();
 }
@@ -46,7 +46,7 @@ void L_ChangeTraffic::on_update(float dt)
         {
             // Switch to green
             agent->set_color(Vec3{ 0,1,0 });
-            greenTimer = 5.0f;
+            greenTimer = 3.0f;
         }
     }
     else if (greenTimer > 0.0f)
@@ -72,7 +72,7 @@ void L_ChangeTraffic::on_update(float dt)
         {
             // Switch back to red and reset timers
             agent->set_color(Vec3{ 1,0,0 });
-            redTimer = 8.0f;
+            redTimer = 3.0f;
         }
     }
 
@@ -87,14 +87,14 @@ void L_ChangeTraffic::on_update(float dt)
                 Vec3 currLight = bb.get_value<Vec3>("CurrentLight");
 
                 if (distance <= 10) {
-                    if (currLight == Vec3(1, 0, 0)) {
+                    if (currLight == Vec3(1, 0, 0)) { // red
                         a->set_movement_speed(0);
                     }
-                    else if (currLight == Vec3(1, 1, 0)) {
-                        a->set_movement_speed(15);
+                    else if (currLight == Vec3(1, 1, 0)) { // yellow
+                        a->set_movement_speed(25);
                     }
                     else {
-                        a->set_movement_speed(23);
+                        a->set_movement_speed(15); //green
                     }
                 }
             }
