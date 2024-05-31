@@ -28,13 +28,14 @@ void D_CheckCollision::on_enter()
                     BehaviorNode::on_enter();
                 }
             }
-            
-          
-          
+
+           
+      
+
+
 
         }
     }
-
 
 
 
@@ -45,7 +46,9 @@ void D_CheckCollision::on_update(float dt)
     // Check if enteredCar is true
     if (collision)
     {
-        // If entered a car, proceed to the child node
+
+        std::cout << "here" << std::endl;
+        // If entered a car1, proceed to the child node
         BehaviorNode* child = children.front();
         child->tick(dt);
         // assume same status as child
@@ -57,6 +60,9 @@ void D_CheckCollision::on_update(float dt)
         // If not entered a car, do nothing or perform other actions as needed
         // For example, you might want to log some message indicating that entering a car condition wasn't met.
         std::cout << "Not collided" << std::endl;
+     
+
+       
     }
 
     // Optionally, you can still display leaf text regardless of entering a car or not

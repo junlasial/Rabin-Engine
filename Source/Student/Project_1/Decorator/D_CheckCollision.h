@@ -7,7 +7,7 @@ class D_CheckCollision : public BaseNode<D_CheckCollision>
 
 public:
 
-    bool collision;
+    bool collision=  false;
 
 
 protected:

@@ -24,7 +24,7 @@ void ProjectOne::setup()
     // Look in Agent.h for all of the setters, like these:
     trafficlight2->set_color(Vec3(0, 1, 0));
     trafficlight2->set_scaling(Vec3(1, 3, 3));
-    trafficlight2->set_position(Vec3(55, 0, 85));
+    trafficlight2->set_position(Vec3(55, 0, 82));
     trafficlight2->set_yaw(PI);
 
 
@@ -75,7 +75,7 @@ void ProjectOne::setup()
 
 
      //3. Create the agent, giving it the correct AgentModel type.
-    auto car1 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive, Agent::AgentModel::Car);
+    auto car1 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
     // 4. (optional) You can also set the pitch of the model, if you want it to be rotated differently
   
     // 5. (optional) Set other aspects to make it start out correctly
@@ -85,14 +85,21 @@ void ProjectOne::setup()
     car1->set_yaw(3 * PI / 2);
     car1->set_movement_speed(10.0);
 
-    auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive, Agent::AgentModel::Car);
+    auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
     // 5. (optional) Set other aspects to make it start out correctly
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
     car2->set_position(Vec3(5, 0, 90));
     car2->set_movement_speed(25.0);
+  
 
-   
+    auto car3 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
+    // 5. (optional) Set other aspects to make it start out correctly
+    car3->set_scaling(Vec3(1, 1, 1));
+    car3->set_color(Vec3(0, 0, 1)); // Set the tree to green
+    car3->set_position(Vec3(5, 0, 10));
+    car3->set_movement_speed(25.0);
+  
     
 
 

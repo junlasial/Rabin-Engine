@@ -1,0 +1,5 @@
+TREENAME(checkcollision)
+TREENODE(C_ParallelSequencer, 0)
+TREENODE(D_CheckCollision, 1)
+TREENODE(L_Idle, 2)
+TREENODE(L_Idle, 1)
