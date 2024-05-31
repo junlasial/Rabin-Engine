@@ -93,12 +93,12 @@ void ProjectOne::setup()
     car2->set_movement_speed(25.0);
   
 
-    auto car3 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
-    // 5. (optional) Set other aspects to make it start out correctly
-    car3->set_scaling(Vec3(1, 1, 1));
-    car3->set_color(Vec3(0, 0, 1)); // Set the tree to green
-    car3->set_position(Vec3(5, 0, 10));
-    car3->set_movement_speed(25.0);
+    //auto car3 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
+    //// 5. (optional) Set other aspects to make it start out correctly
+    //car3->set_scaling(Vec3(1, 1, 1));
+    //car3->set_color(Vec3(0, 0, 1)); // Set the tree to green
+    //car3->set_position(Vec3(5, 0, 10));
+    //car3->set_movement_speed(25.0);
   
     
 

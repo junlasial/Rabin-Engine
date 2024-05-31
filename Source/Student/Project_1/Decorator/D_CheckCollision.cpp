@@ -21,7 +21,7 @@ void D_CheckCollision::on_enter()
                 const auto& agentPos = a->get_position();
                 const float distance = Vec3::Distance(currPos, agentPos);
 
-                if (distance <= 20)
+                if (distance <= 25)
                 {
                     collision = true;
                     std::cout << "Collision" << std::endl;
