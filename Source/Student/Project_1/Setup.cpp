@@ -55,6 +55,45 @@ void ProjectOne::setup()
 
 
 
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     Footballer1->set_color(Vec3(1, 1, 1));
+     Footballer1->set_scaling(Vec3(1, 1, 1));
+     Footballer1->set_position(Vec3(25, 0, 25));
+     Footballer1->set_movement_speed(30);
+
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto Footballer2 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     Footballer2->set_color(Vec3(1, 1, 1));
+     Footballer2->set_scaling(Vec3(1, 1, 1));
+     Footballer2->set_position(Vec3(25, 0, 75));
+     Footballer2->set_movement_speed(30);
+
+
+
+
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto football = agents->create_behavior_agent("football", BehaviorTreeTypes::ballC, Agent::AgentModel::Ball);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     football->set_color(Vec3(0.5, 0.3, 0.7));
+     football->set_scaling(Vec3(0.3, 0.3, 0.3));
+     football->set_position(Vec3(25, 8 , 30));
+     football->set_movement_speed(25);
+
+
+
+
      //// Create an agent (using the default "Agent::AgentModel::Man" model)
      //auto driver2 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::MoveToNearestCar);
 
@@ -89,7 +128,7 @@ void ProjectOne::setup()
     car1->set_yaw(3 * PI / 2);
     car1->set_movement_speed(15.0);
 
-    auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
+    auto car2 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
     // 5. (optional) Set other aspects to make it start out correctly
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // Set the tree to green
@@ -246,7 +285,7 @@ void ProjectOne::setup()
         for (int j = 3; j < 8; j++) {
 
 
-            terrain->pathLayer.set_value(j, i, Colors::LawnGreen);
+            terrain->pathLayer.set_value(j, i, Colors::ForestGreen);
 
         }
     }
@@ -257,13 +296,54 @@ void ProjectOne::setup()
         for (int j = 11; j < 17; j++) {
 
 
-            terrain->pathLayer.set_value(j, i, Colors::LawnGreen);
+            terrain->pathLayer.set_value(j, i, Colors::ForestGreen);
 
         }
     }
 
+    //Middle of the field
+    terrain->pathLayer.set_value(3, 9, Colors::GhostWhite);
+    terrain->pathLayer.set_value(4 , 9, Colors::GhostWhite);
+    terrain->pathLayer.set_value(5, 9, Colors::GhostWhite);
+    terrain->pathLayer.set_value(6, 9, Colors::GhostWhite);
+    terrain->pathLayer.set_value(7, 9, Colors::GhostWhite);
+
+    //circle center field
+
+    terrain->pathLayer.set_value(4, 7, Colors::GhostWhite);
+    terrain->pathLayer.set_value(4, 8, Colors::GhostWhite);
+    terrain->pathLayer.set_value(5, 7, Colors::GhostWhite);
+    terrain->pathLayer.set_value(6, 8, Colors::GhostWhite);
+    terrain->pathLayer.set_value(4, 10, Colors::GhostWhite);
+    terrain->pathLayer.set_value(6, 10, Colors::GhostWhite);
+    terrain->pathLayer.set_value(5, 11, Colors::GhostWhite);
+    terrain->pathLayer.set_value(4, 11, Colors::GhostWhite);
+    terrain->pathLayer.set_value(6, 11, Colors::GhostWhite);
+    terrain->pathLayer.set_value(6, 7, Colors::GhostWhite);
+
+    //Left field Goal
+    terrain->pathLayer.set_value(3, 3, Colors::LightGray);
+    terrain->pathLayer.set_value(3, 4, Colors::LightGray);
+  
+    terrain->pathLayer.set_value(4, 4, Colors::LightGray);
+    terrain->pathLayer.set_value(5, 4, Colors::LightGray);
+    terrain->pathLayer.set_value(6, 4, Colors::LightGray);
+    terrain->pathLayer.set_value(7, 4, Colors::LightGray);
+
+    terrain->pathLayer.set_value(7, 4, Colors::LightGray);
+    terrain->pathLayer.set_value(7, 3, Colors::LightGray);
 
 
+    //Right field Goal
+
+
+    terrain->pathLayer.set_value(3, 15, Colors::LightGray);
+    terrain->pathLayer.set_value(3, 16, Colors::LightGray);
+    terrain->pathLayer.set_value(4, 15, Colors::LightGray);
+    terrain->pathLayer.set_value(5, 15, Colors::LightGray);
+    terrain->pathLayer.set_value(6, 15, Colors::LightGray);
+    terrain->pathLayer.set_value(7, 15, Colors::LightGray);
+    terrain->pathLayer.set_value(7, 16, Colors::LightGray);
 
 
 
@@ -273,11 +353,14 @@ void ProjectOne::setup()
     camera->set_position(Vec3(-62.0f, 70.0f, terrain->mapSizeInWorld * 0.5f));
     camera->set_pitch(0.610865); // 35 degrees
 
+
+
+
     // Sound control (these sound functions can be kicked off in a behavior tree node - see the example in L_PlaySound.cpp)
     audioManager->SetVolume(0.5f);
     audioManager->PlaySoundEffect(L"Assets\\Audio\\retro.wav");
     // Uncomment for example on playing music in the engine (must be .wav)
-    // audioManager->PlayMusic(L"Assets\\Audio\\motivate.wav");
+    audioManager->PlayMusic(L"Assets\\Audio\\motivate.wav");
     // audioManager->PauseMusic(...);
     // audioManager->ResumeMusic(...);
     // audioManager->StopMusic(...);

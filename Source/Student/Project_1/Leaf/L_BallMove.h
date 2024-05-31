@@ -1,17 +1,14 @@
 #pragma once
-#pragma once
 #include "BehaviorNode.h"
 
-class D_CheckCollision : public BaseNode<D_CheckCollision>
+class L_BallMove : public BaseNode<L_BallMove>
 {
-
-public:
-
-    bool collision = false;
-
-
 protected:
-
     virtual void on_enter() override;
     virtual void on_update(float dt) override;
-}; 
+
+private:
+    Vec3 targetPoint;
+    Vec3 finalPoint;
+  
+};

@@ -1,6 +1,7 @@
 #include <pch.h>
 #include "L_ChangeTraffic.h"
 #include <random>
+#include "Agent/CameraAgent.h"
 
 // Constructor
 L_ChangeTraffic::L_ChangeTraffic() : timer(0.0f), redTimer(0.0f), greenTimer(0.0f), yellowTimer(0.0f)
@@ -27,6 +28,10 @@ void L_ChangeTraffic::on_enter()
 
 // on_update method
 void L_ChangeTraffic::on_update(float dt)
+
+
+
+
 {
     // Get a list of all current agents
     const auto& allAgents = agents->get_all_agents();
