@@ -370,6 +370,9 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_StopCar.h">
       <Filter>Source\Student\Project_1\Leaf</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_GoCar.h">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework\Main.cpp">
@@ -640,6 +643,9 @@
       <Filter>Source\Student\Project_1\Decorator</Filter>
     </ClCompile>
     <ClCompile Include="Source\Student\Project_1\Leaf\L_StopCar.cpp">
+      <Filter>Source\Student\Project_1\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_GoCar.cpp">
       <Filter>Source\Student\Project_1\Leaf</Filter>
     </ClCompile>
   </ItemGroup>

@@ -13,6 +13,7 @@
 #include "../Source/Student/Project_1/Trees/newdrive.bht"
 #include "../Source/Student/Project_1/Trees/newdrive1.bht"
 #include "../Source/Student/Project_1/Trees/newdrive2.bht"
+#include "../Source/Student/Project_1/Trees/newdrive3.bht"
 #include "../Source/Student/Project_1/Trees/testing1233.bht"
 #include "../Source/Student/Project_1/Trees/TrafficLight.bht"
 #include "../Source/Student/Project_1/Trees/walking.bht"

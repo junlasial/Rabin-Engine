@@ -97,11 +97,11 @@ void L_ChangeTraffic::on_update(float dt)
                     
                   
                     else if (currLight == Vec3(1, 1, 0)) {
-                        a->set_movement_speed(25);
+                        a->set_movement_speed(30);
                     }
 
                     else {
-                        a->set_movement_speed(15);
+                        a->set_movement_speed(25);
 
                     }
 

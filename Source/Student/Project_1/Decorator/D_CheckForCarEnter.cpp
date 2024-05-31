@@ -11,6 +11,7 @@ void D_CheckForCarEnter::on_enter()
     const auto& allAgents = agents->get_all_agents();
     // and our agent's position
     const auto& currPos = agent->get_position();
+  
 
     for (const auto& a : allAgents)
     {

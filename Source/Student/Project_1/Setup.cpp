@@ -24,7 +24,7 @@ void ProjectOne::setup()
     // Look in Agent.h for all of the setters, like these:
     trafficlight2->set_color(Vec3(0, 1, 0));
     trafficlight2->set_scaling(Vec3(1, 3, 3));
-    trafficlight2->set_position(Vec3(55, 0, 82));
+    trafficlight2->set_position(Vec3(58, 0, 83));
     trafficlight2->set_yaw(PI);
 
 
