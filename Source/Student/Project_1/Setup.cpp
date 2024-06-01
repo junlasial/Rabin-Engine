@@ -54,14 +54,22 @@ void ProjectOne::setup()
      driver2->set_movement_speed(30);
 
 
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto Explorer0 = agents->create_behavior_agent("Explorer", BehaviorTreeTypes::Explore);
 
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     Explorer0->set_color(Vec3(0.9, 0.9, 0.8));
+     Explorer0->set_scaling(Vec3(1, 1, 1));
+     Explorer0->set_position(Vec3(60, 0, 25));
+     Explorer0->set_movement_speed(30);
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
      auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     Footballer1->set_color(Vec3(1, 1, 1));
+     Footballer1->set_color(Vec3(0, 0, 1));
      Footballer1->set_scaling(Vec3(1, 1, 1));
      Footballer1->set_position(Vec3(25, 0, 25));
      Footballer1->set_movement_speed(30);
@@ -72,7 +80,7 @@ void ProjectOne::setup()
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     Footballer2->set_color(Vec3(1, 1, 1));
+     Footballer2->set_color(Vec3(1,0 , 0));
      Footballer2->set_scaling(Vec3(1, 1, 1));
      Footballer2->set_position(Vec3(25, 0, 75));
      Footballer2->set_movement_speed(30);
@@ -86,7 +94,7 @@ void ProjectOne::setup()
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     football->set_color(Vec3(0.5, 0.3, 0.7));
+     football->set_color(Vec3(0,0, 0));
      football->set_scaling(Vec3(0.3, 0.3, 0.3));
      football->set_position(Vec3(25, 8 , 30));
      football->set_movement_speed(25);

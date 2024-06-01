@@ -40,6 +40,11 @@ void D_CheckReachMall::on_enter()
                     a->set_pitch(PI/20);
                     a->set_color(Vec3(1, 0, 0));
 
+
+
+                    agents->destroy_agent(a);
+                   
+
                 }
             }
 

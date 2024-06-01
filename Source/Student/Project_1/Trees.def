@@ -9,6 +9,7 @@
 #include "../Source/Student/Project_1/Trees/corner.bht"
 #include "../Source/Student/Project_1/Trees/DriveCar.bht"
 #include "../Source/Student/Project_1/Trees/Example.bht"
+#include "../Source/Student/Project_1/Trees/Explore.bht"
 #include "../Source/Student/Project_1/Trees/FootBaller.bht"
 #include "../Source/Student/Project_1/Trees/gtestubg.bht"
 #include "../Source/Student/Project_1/Trees/Idle.bht"
