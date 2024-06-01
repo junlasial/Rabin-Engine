@@ -7,7 +7,7 @@ void L_GoShopping::on_enter()
     // write the world position into the blackboard
 
     const auto& bb = agent->get_blackboard();
-    targetPoint = bb.get_value<Vec3>("ShoppingMall");
+    targetPoint = bb.get_value<Vec3>("ShoppingMall2");
     agent->set_scaling(Vec3{ 2,2,2 });
 
 

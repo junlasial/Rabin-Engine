@@ -175,6 +175,21 @@ void ProjectOne::setup()
     hut->set_position(Vec3(75, 0, 73));
     hut->set_yaw(PI/2 );
 
+    auto hut1 = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
+    // 5. (optional) Set other aspects to make it start out correctly
+    hut1->set_scaling(Vec3(0.8, 0.8, 0.8));
+    hut1->set_color(Vec3(1, 0.7, 0));   // Set the tree to green
+    hut1->set_position(Vec3(75, 0, 54));
+    hut1->set_yaw(PI / 2);
+
+
+    auto hut2 = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
+    // 5. (optional) Set other aspects to make it start out correctly
+    hut2->set_scaling(Vec3(0.8, 0.8, 0.8));
+    hut2->set_color(Vec3(1, 0.7, 0));   // Set the tree to green
+    hut2->set_position(Vec3(75, 0, 35));
+    hut2->set_yaw(PI / 2);
+
     auto tree = agents->create_behavior_agent("tree", BehaviorTreeTypes::Idle, Agent::AgentModel::Tree);
     // 5. (optional) Set other aspects to make it start out correctly
     tree->set_scaling(Vec3(2, 2, 2));

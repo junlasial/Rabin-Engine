@@ -270,6 +270,7 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Explore.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_FootballMovement.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_GoCar.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_GoHouse.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_GoShopping.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Idle.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToCheckPoint1.h" />
@@ -370,6 +371,7 @@
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Explore.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_FootballMovement.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_GoCar.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_GoHouse.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_GoShopping.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Idle.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToCheckPoint1.cpp" />

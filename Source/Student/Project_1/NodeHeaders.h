@@ -48,3 +48,5 @@
 #include "Leaf/L_BallMove.h"
 #include "Leaf/L_FootballMovement.h"
 #include "Leaf/L_Explore.h"
+#include "Leaf/L_GoHouse.h"
+

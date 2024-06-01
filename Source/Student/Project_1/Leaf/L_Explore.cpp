@@ -18,7 +18,7 @@ void L_Explore::on_enter()
         targetPoint = RNG::explore_position();
 
 
-      auto i =  agent->get_id();
+        agent->set_scaling(Vec3{ 1.5,1.5,1.5 });
 
     
         BehaviorNode::on_leaf_enter();
