@@ -60,7 +60,16 @@ void L_GoHouse::on_update(float dt)
             waitTime += dt;
             if (waitTime >= 5.0f)
             {
-                agent->set_scaling(Vec3{ 1.5,1.5,1.5 });
+
+                if (agent->getAgentModel() == Agent::AgentModel::Bird) {
+                    agent->set_scaling(Vec3{ 0.01,0.01,0.01 });
+                }
+
+                else {
+
+                    agent->set_scaling(Vec3{ 1.5,1.5,1.5 });
+                }
+           
 
                 // Wait time has elapsed
                 on_success();

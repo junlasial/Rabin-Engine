@@ -184,7 +184,6 @@
     <ClInclude Include="L_MoveToCheckPoint2.h" />
     <ClInclude Include="L_MoveToCheckPoint3.h" />
     <ClInclude Include="L_MoveToNearestCar.h" />
-    <ClInclude Include="L_MoveToCorner.h" />
     <ClInclude Include="Source\Framework\Agent\Agent.h" />
     <ClInclude Include="Source\Framework\Agent\AgentOrganizer.h" />
     <ClInclude Include="Source\Framework\Agent\BehaviorAgent.h" />
@@ -266,6 +265,8 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_ChangeTraffic.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_CreateBaby.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_Death.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Drive.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Explore.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_FootballMovement.h" />
@@ -289,7 +290,6 @@
     <ClCompile Include="L_MoveToCheckPoint2.cpp" />
     <ClCompile Include="L_MoveToCheckPoint3.cpp" />
     <ClCompile Include="L_MoveToNearestCar.cpp" />
-    <ClCompile Include="L_MoveToCorner.cpp" />
     <ClCompile Include="Source\Framework\Agent\Agent.cpp" />
     <ClCompile Include="Source\Framework\Agent\AgentOrganizer.cpp" />
     <ClCompile Include="Source\Framework\Agent\BehaviorAgent.cpp" />
@@ -367,6 +367,8 @@
     <ClCompile Include="Source\Student\Project_1\Leaf\L_ChangeTraffic.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckCurrentCheckPoint.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_CheckMouseClick.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_CreateBaby.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_Death.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Drive.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Explore.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_FootballMovement.cpp" />

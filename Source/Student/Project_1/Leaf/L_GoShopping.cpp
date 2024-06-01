@@ -34,7 +34,7 @@ void L_GoShopping::on_update(float dt)
 
             if (result == true)
             {
-                agent->set_scaling(Vec3{ 1,1,1 });
+                agent->set_scaling(Vec3{ 0,0,0 });
                 // Start the waiting period
                 waitingForSuccess = true;
                 waitTime = 0.0f; // Reset the wait time

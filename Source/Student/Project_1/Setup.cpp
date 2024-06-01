@@ -74,6 +74,27 @@ void ProjectOne::setup()
      Explorer1->set_position(Vec3(60, 0, 40));
      Explorer1->set_movement_speed(30);
 
+
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto Explorer2 = agents->create_behavior_agent("Explorer", BehaviorTreeTypes::Explore);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     Explorer2->set_color(Vec3(1, 0.7, 1));
+     Explorer2->set_scaling(Vec3(1.5, 1.5, 1.5));
+     Explorer2->set_position(Vec3(67, 0, 35));
+     Explorer2->set_movement_speed(30);
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto Explorer3 = agents->create_behavior_agent("Explorer", BehaviorTreeTypes::Explore);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     Explorer3->set_color(Vec3(0.9, 0.9, 0.8));
+     Explorer3->set_scaling(Vec3(1.5, 1.5, 1.5));
+     Explorer3->set_position(Vec3(58, 0, 50));
+     Explorer3->set_movement_speed(30);
      // Create an agent (using the default "Agent::AgentModel::Man" model)
      auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
 
@@ -105,7 +126,7 @@ void ProjectOne::setup()
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     football->set_color(Vec3(0,0, 0));
+     football->set_color(Vec3(0.6,0.6, 0.6));
      football->set_scaling(Vec3(0.3, 0.3, 0.3));
      football->set_position(Vec3(25, 8 , 30));
      football->set_movement_speed(15);
@@ -137,11 +158,11 @@ void ProjectOne::setup()
 
 
      //3. Create the agent, giving it the correct AgentModel type.
-    auto car1 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive3, Agent::AgentModel::Car);
+    auto car1 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive3, Agent::AgentModel::Car);
     // 4. (optional) You can also set the pitch of the model, if you want it to be rotated differently
   
     // 5. (optional) Set other aspects to make it start out correctly
-    car1->set_scaling(Vec3(1.2, 1.2, 1.2));
+    car1->set_scaling(Vec3(1, 1, 1));
     car1->set_color(Vec3(1, 0.3, 0.8));   //pink
     car1->set_position(Vec3(90, 0, 90));
     car1->set_yaw(3 * PI / 2);
@@ -149,7 +170,7 @@ void ProjectOne::setup()
  
  
 
-    auto car2 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
+    auto car2 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
     // 5. (optional) Set other aspects to make it start out correctly
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // blue

@@ -31,7 +31,7 @@
 
 // Student Leaf Nodes
 
-#include "Leaf/L_MoveToCorner.h"
+
 #include "Leaf/L_MoveToNearestCar.h"
 #include "Leaf/L_MoveToCheckPoint1.h"
 #include "Leaf/L_MoveToCheckPoint2.h"
@@ -49,4 +49,6 @@
 #include "Leaf/L_FootballMovement.h"
 #include "Leaf/L_Explore.h"
 #include "Leaf/L_GoHouse.h"
+#include "Leaf/L_CreateBaby.h"
+#include "Leaf/L_Death.h"
 

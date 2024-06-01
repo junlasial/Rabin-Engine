@@ -38,7 +38,7 @@ void D_CheckForCarEnter::on_enter()
                 {
                     enteredCar = true;
 
-                    a->set_scaling(Vec3{ 1, 0.8, 1 });
+                    a->set_scaling(Vec3{ 0,0,0 });
                   //  std::cout << "ENTERED" << std::endl;
                     BehaviorNode::on_enter();
                 }

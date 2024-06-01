@@ -30,7 +30,7 @@ void L_MoveToNearestCar::on_enter()
 
                 agent->set_scaling(Vec3{ 2,2,2 });
 
-                if (id == 0) {
+                
                     const auto& agentPos = a->get_position();
                     const float distance = Vec3::Distance(currPos, agentPos);
 
@@ -38,32 +38,15 @@ void L_MoveToNearestCar::on_enter()
                     if (distance < longestDistance)
                     {
                         if (distance < 15) {
-                            agent->set_scaling(Vec3{ 1,1,1 });
+                            agent->set_scaling(Vec3{ 0,0,0 });
 
                         }
                         longestDistance = distance;
                         furthestPoint = agentPos;
                         targetFound = true;
                     }
-                }
+                
 
-                if (id == 1) {
-                    const auto& agentPos = a->get_position();
-                    const float distance = Vec3::Distance(currPos, agentPos);
-
-
-                    if (distance < longestDistance)
-                    {
-
-                        if (distance < 15) {
-                            agent->set_scaling(Vec3{ 1,1,1 });
-
-                        }
-                        longestDistance = distance;
-                        furthestPoint = agentPos;
-                        targetFound = true;
-                    }
-                }
 
 
             }
