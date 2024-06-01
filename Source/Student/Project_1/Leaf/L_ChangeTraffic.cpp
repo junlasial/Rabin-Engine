@@ -87,6 +87,10 @@ void L_ChangeTraffic::on_update(float dt)
         if (a != agent)
         {
             if (a->getAgentModel() == Agent::AgentModel::Car) {
+
+               auto id = a->get_id();
+
+            
                 const auto& agentPos = a->get_position();
                 const float distance = Vec3::Distance(currPos, agentPos);
                 Vec3 currLight = bb.get_value<Vec3>("CurrentLight");
@@ -96,10 +100,23 @@ void L_ChangeTraffic::on_update(float dt)
                         a->set_movement_speed(0);
                     }
                     else if (currLight == Vec3(1, 1, 0)) { // yellow
-                        a->set_movement_speed(25);
+                        if (id == 0) {
+                            a->set_movement_speed(12); //green
+                        }
+                        if (id == 1) {
+                            a->set_movement_speed(18); //green
+
+                        }
                     }
                     else {
-                        a->set_movement_speed(15); //green
+                        if (id == 0) {
+                            a->set_movement_speed(10); //green
+                        }
+                        if (id == 1) {
+                            a->set_movement_speed(17); //green
+
+                        }
+                       
                     }
                 }
             }

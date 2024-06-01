@@ -12,7 +12,7 @@ void L_StopCar::on_enter()
     if (bb.get_value<bool>("collide") == true)
     {
         // Slow down to speed 5
-        agent->set_movement_speed(0);
+        agent->set_movement_speed(1);
 
         // Create a separate thread to handle the delayed action
         std::thread([this]() {
@@ -20,7 +20,7 @@ void L_StopCar::on_enter()
             std::this_thread::sleep_for(std::chrono::seconds(3));
 
             // After 5 seconds, speed up to 15
-            agent->set_movement_speed(15);
+            agent->set_movement_speed(6);
             }).detach(); // Detach the thread to let it run independently
     }
 

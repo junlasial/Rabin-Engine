@@ -20,7 +20,7 @@ void L_Explore::on_enter()
 
       auto i =  agent->get_id();
 
-      std::cout << "id is : " <<i << std::endl;
+    
         BehaviorNode::on_leaf_enter();
 
 

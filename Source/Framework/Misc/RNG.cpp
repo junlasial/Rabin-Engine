@@ -134,7 +134,7 @@ Vec3 RNG::world_position()
 Vec3 RNG::footballer_position1() {
 
     std::uniform_real_distribution<float> distX(16.0f, 34.0f);
-    std::uniform_real_distribution<float> distZ(16.0f, 49.0f);
+    std::uniform_real_distribution<float> distZ(20.0f, 49.0f);
     return Vec3(distX(generator), 0.0f, distZ(generator));
 
         
@@ -143,7 +143,7 @@ Vec3 RNG::footballer_position1() {
 Vec3 RNG::footballer_position2() {
 
     std::uniform_real_distribution<float> distX(16.0f, 34.0f);
-    std::uniform_real_distribution<float> distZ(49.0f, 83.0f);
+    std::uniform_real_distribution<float> distZ(49.0f, 80.0f);
     return Vec3(distX(generator), 0.0f, distZ(generator));
 
 

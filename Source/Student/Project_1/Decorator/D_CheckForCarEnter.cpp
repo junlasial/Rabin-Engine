@@ -25,7 +25,7 @@ void D_CheckForCarEnter::on_enter()
                 if (distance <= 1)
                 {
                     enteredCar = true;
-                    std::cout << "ENTERED" << std::endl;
+                  //  std::cout << "ENTERED" << std::endl;
                     BehaviorNode::on_enter();
                 }
             }
@@ -37,7 +37,7 @@ void D_CheckForCarEnter::on_enter()
                 if (distance <= 1)
                 {
                     enteredCar = true;
-                    std::cout << "ENTERED" << std::endl;
+                  //  std::cout << "ENTERED" << std::endl;
                     BehaviorNode::on_enter();
                 }
             }

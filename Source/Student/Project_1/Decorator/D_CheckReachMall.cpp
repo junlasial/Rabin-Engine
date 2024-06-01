@@ -42,7 +42,7 @@ void D_CheckReachMall::on_enter()
 
 
 
-                    agents->destroy_agent(a);
+                   
                    
 
                 }

@@ -24,22 +24,35 @@ void D_CheckCollision::on_enter()
             
                 if (a->getAgentModel() == Agent::AgentModel::Car) {
 
+                    auto id = a->get_id();
 
-                    const auto& agentPos = a->get_position();
-                    const float distance = Vec3::Distance(currPos, agentPos);
 
-                    if (distance <= 25)
-                    {
-                        bb.set_value("collide", bool(true));
-                        collision = bb.get_value<bool>("collide");
-                        std::cout << "Collision" << std::endl;
-                        BehaviorNode::on_enter();
+
+                    if (id == 0) {
+
+                        const auto& agentPos = a->get_position();
+                        const float distance = Vec3::Distance(currPos, agentPos);
+
+                        if (distance <= 25)
+                        {
+                            bb.set_value("collide", bool(true));
+                            collision = bb.get_value<bool>("collide");
+                            std::cout << "Collision" << std::endl;
+                            BehaviorNode::on_enter();
+                        }
+
+                        else {
+                            bb.set_value("collide", bool(false));
+                            collision = bb.get_value<bool>("collide");
+                        }
                     }
 
-                    else {
-                        bb.set_value("collide", bool(false));
-                        collision = bb.get_value<bool>("collide");
-                    }
+
+
+
+
+
+                    
                 }
             
             }
@@ -60,7 +73,7 @@ void D_CheckCollision::on_enter()
                         if (distance <= 10)
                         {
                             bb.set_value("ballcollideA", bool(true));
-                            std::cout << "Ball collide la sial" << std::endl;
+                           
                             BehaviorNode::on_enter();
 
                         }
