@@ -40,6 +40,11 @@ public:
     static Color color(float alpha = 1.0f);
     static Vec3 world_position();
 
+    //Student added function
+    static Vec3 footballer_position1();
+    static Vec3 footballer_position2();
+
+
     template <typename T>
     static const T &element(const std::vector<T> &vec);
 

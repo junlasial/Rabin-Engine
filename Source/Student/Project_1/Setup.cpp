@@ -57,7 +57,7 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::Idle);
+     auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
@@ -68,7 +68,7 @@ void ProjectOne::setup()
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto Footballer2 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::Idle);
+     auto Footballer2 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
@@ -345,7 +345,7 @@ void ProjectOne::setup()
     terrain->pathLayer.set_value(7, 15, Colors::LightGray);
     terrain->pathLayer.set_value(7, 16, Colors::LightGray);
 
-
+  
 
 
     // Camera position can be modified from this default
