@@ -11,6 +11,8 @@ void L_GoShopping::on_enter()
     agent->set_scaling(Vec3{ 2,2,2 });
 
 
+
+
     BehaviorNode::on_leaf_enter();
 
 }
