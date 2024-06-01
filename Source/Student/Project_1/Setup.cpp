@@ -59,17 +59,27 @@ void ProjectOne::setup()
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     Explorer0->set_color(Vec3(0.9, 0.9, 0.8));
-     Explorer0->set_scaling(Vec3(1, 1, 1));
+     Explorer0->set_color(Vec3(1, 0.7, 1));
+     Explorer0->set_scaling(Vec3(1.5, 1.5, 1.5));
      Explorer0->set_position(Vec3(60, 0, 25));
      Explorer0->set_movement_speed(30);
+
+     // Create an agent (using the default "Agent::AgentModel::Man" model)
+     auto Explorer1 = agents->create_behavior_agent("Explorer", BehaviorTreeTypes::Explore);
+
+     // You can change properties here or at runtime from a behavior tree leaf node
+     // Look in Agent.h for all of the setters, like these:
+     Explorer1->set_color(Vec3(0.9, 0.9, 0.8));
+     Explorer1->set_scaling(Vec3(1.5, 1.5, 1.5));
+     Explorer1->set_position(Vec3(60, 0, 40));
+     Explorer1->set_movement_speed(30);
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
      auto Footballer1 = agents->create_behavior_agent("Footballer", BehaviorTreeTypes::FootBaller);
 
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
-     Footballer1->set_color(Vec3(0, 0, 1));
+     Footballer1->set_color(Vec3(0.3, 0.9, 1));
      Footballer1->set_scaling(Vec3(1.5, 1.5, 1.5));
      Footballer1->set_position(Vec3(25, 0, 25));
      Footballer1->set_movement_speed(10);
@@ -161,7 +171,7 @@ void ProjectOne::setup()
     auto hut = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
     // 5. (optional) Set other aspects to make it start out correctly
     hut->set_scaling(Vec3(0.8, 0.8, 0.8));
-    hut->set_color(Vec3(2.9, 1.5, 1.9));   // Set the tree to green
+    hut->set_color(Vec3(1, 0.7, 0));   // Set the tree to green
     hut->set_position(Vec3(75, 0, 73));
     hut->set_yaw(PI/2 );
 
@@ -308,7 +318,7 @@ void ProjectOne::setup()
         for (int j = 11; j < 17; j++) {
 
 
-            terrain->pathLayer.set_value(j, i, Colors::SaddleBrown);
+            terrain->pathLayer.set_value(j, i, Colors::DarkGray);
 
         }
     }
