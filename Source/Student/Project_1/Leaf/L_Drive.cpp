@@ -79,7 +79,7 @@ void L_Drive::on_enter()
 
 void L_Drive::on_update(float dt)
 {
-    const auto result = agent->move_toward_point(targetPoint, dt);
+    const auto result = agent->move_toward_point_car(targetPoint, dt);
     
 
     if (result == true)

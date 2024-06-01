@@ -97,7 +97,7 @@ void L_ChangeTraffic::on_update(float dt)
 
                 if (distance <= 10) {
                     if (currLight == Vec3(1, 0, 0)) { // red
-                        a->set_movement_speed(0);
+                        a->set_movement_speed(0.1);
                     }
                     else if (currLight == Vec3(1, 1, 0)) { // yellow
                         if (id == 0) {

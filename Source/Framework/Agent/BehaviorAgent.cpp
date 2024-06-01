@@ -85,6 +85,49 @@ bool BehaviorAgent::move_toward_point(const Vec3 &point, float dt)
     return result;
 }
 
+
+bool BehaviorAgent::move_toward_point_car(const Vec3& point, float dt)
+{
+    bool result = false;
+
+    const auto currentPos = get_position();
+
+    auto delta = point - currentPos;
+
+    const float length = delta.Length();
+
+    // see if we're close enough to the goal
+    if (length <= movementEpsilon)
+    {
+        // no need to actually move
+        result = true;
+    }
+    else
+    {
+        // determine how far to actually move
+        float actualSpeed = get_movement_speed() * dt;
+
+        // see if we even need to move the full distance
+        if (length < actualSpeed)
+        {
+            // this move will put us within range of the target point
+            result = true;
+            actualSpeed = length;
+        }
+
+        delta.Normalize();
+        delta *= actualSpeed;
+
+        const auto nextPos = currentPos + delta;
+        set_position(nextPos);
+
+        const float yaw = std::atan2(-delta.x, -delta.z);
+        set_yaw(yaw);
+    }
+
+    return result;
+}
+
 const std::wstring &BehaviorAgent::get_debug_name() const
 {
     return debugName;
