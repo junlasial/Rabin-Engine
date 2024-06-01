@@ -44,6 +44,7 @@ public:
     static Vec3 footballer_position1();
     static Vec3 footballer_position2();
     static Vec3 explore_position();
+    static Vec3 bird_position();
 
 
     template <typename T>

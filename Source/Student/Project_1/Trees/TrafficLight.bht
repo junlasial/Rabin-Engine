@@ -1,4 +1,4 @@
 TREENAME(TrafficLight)
-TREENODE(C_Selector, 0)
-TREENODE(L_ChangeTraffic, 1)
+TREENODE(C_Sequencer, 0)
+TREENODE(L_PlayTraffic, 1)
 TREENODE(L_ChangeTraffic, 1)

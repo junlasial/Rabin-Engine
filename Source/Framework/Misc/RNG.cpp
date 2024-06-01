@@ -151,9 +151,21 @@ Vec3 RNG::footballer_position2() {
 
 Vec3 RNG::explore_position() {
 
-    std::uniform_real_distribution<float> distX(57.0f, 83.0f);
+    std::uniform_real_distribution<float> distX(57.0f, 75.0f);
     std::uniform_real_distribution<float> distZ(16.0f, 83.0f);
     return Vec3(distX(generator), 0.0f, distZ(generator));
+
+
+}
+
+
+Vec3 RNG::bird_position() {
+
+    std::uniform_real_distribution<float> disty(0.0f, terrain->mapSizeInWorld);
+    std::uniform_real_distribution<float> dist(0.0f, terrain->mapSizeInWorld);
+
+
+    return Vec3(dist(generator), disty(generator), dist(generator));
 
 
 }

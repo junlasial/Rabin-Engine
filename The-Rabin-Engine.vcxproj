@@ -269,6 +269,7 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Death.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Drive.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_Explore.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_FlyToRandomPosition.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_FootballMovement.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_GoCar.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_GoHouse.h" />
@@ -281,7 +282,10 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToFurthestAgent.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToMouseClick.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_MoveToRandomPosition.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_PlayCarHorn.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_PlayKickBall.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_PlaySound.h" />
+    <ClInclude Include="Source\Student\Project_1\Leaf\L_PlayTraffic.h" />
     <ClInclude Include="Source\Student\Project_1\Leaf\L_StopCar.h" />
     <ClInclude Include="Source\Student\Project_1\NodeHeaders.h" />
     <ClInclude Include="Source\Student\Project_2\P2_Pathfinding.h" />
@@ -371,6 +375,7 @@
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Death.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Drive.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_Explore.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_FlyToRandomPosition.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_FootballMovement.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_GoCar.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_GoHouse.cpp" />
@@ -383,7 +388,10 @@
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToFurthestAgent.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToMouseClick.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_MoveToRandomPosition.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_PlayCarHorn.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_PlayKickBall.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_PlaySound.cpp" />
+    <ClCompile Include="Source\Student\Project_1\Leaf\L_PlayTraffic.cpp" />
     <ClCompile Include="Source\Student\Project_1\Leaf\L_StopCar.cpp" />
     <ClCompile Include="Source\Student\Project_1\Setup.cpp" />
     <ClCompile Include="Source\Student\Project_2\P2_Pathfinding.cpp" />

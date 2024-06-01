@@ -20,8 +20,8 @@ void L_ChangeTraffic::on_enter()
 
     // Set initial timer values with random offsets, cast to float
     redTimer = 3.0f + static_cast<float>(dis(gen));
-    greenTimer = 3.0f + static_cast<float>(dis(gen));
-    yellowTimer = 1.0f + static_cast<float>(dis(gen));
+    greenTimer = 6.0f + static_cast<float>(dis(gen));
+    yellowTimer = 3.0f + static_cast<float>(dis(gen));
 
     BehaviorNode::on_leaf_enter();
 }
@@ -40,10 +40,12 @@ void L_ChangeTraffic::on_update(float dt)
 
     // Blackboard
     auto& bb = agent->get_blackboard();
+        audioManager->SetVolume(0.5f);
 
     if (redTimer > 0.0f)
     {
         bb.set_value("CurrentLight", Vec3{ 1,0,0 });
+   
 
         // Red phase
         redTimer -= dt;
@@ -51,7 +53,10 @@ void L_ChangeTraffic::on_update(float dt)
         {
             // Switch to green
             agent->set_color(Vec3{ 0,1,0 });
-            greenTimer = 3.0f;
+
+            audioManager->PlaySoundEffect(L"Assets\\Audio\\trafficlight.wav");
+
+            greenTimer =6.0f;
         }
     }
     else if (greenTimer > 0.0f)
@@ -64,7 +69,9 @@ void L_ChangeTraffic::on_update(float dt)
         {
             // Switch to yellow
             agent->set_color(Vec3{ 1,1,0 });
-            yellowTimer = 1.0f;
+            yellowTimer = 3.0f;
+
+            audioManager->PlaySoundEffect(L"Assets\\Audio\\trafficlight.wav");
         }
     }
     else
@@ -78,6 +85,8 @@ void L_ChangeTraffic::on_update(float dt)
             // Switch back to red and reset timers
             agent->set_color(Vec3{ 1,0,0 });
             redTimer = 3.0f;
+
+            audioManager->PlaySoundEffect(L"Assets\\Audio\\trafficlight.wav");
         }
     }
 

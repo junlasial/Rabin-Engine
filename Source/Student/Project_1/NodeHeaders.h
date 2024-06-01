@@ -51,4 +51,8 @@
 #include "Leaf/L_GoHouse.h"
 #include "Leaf/L_CreateBaby.h"
 #include "Leaf/L_Death.h"
+#include "Leaf/L_PlayCarHorn.h"
+#include "Leaf/L_PlayKickBall.h"
+#include "Leaf/L_PlayTraffic.h"
+#include "Leaf/L_FlyToRandomPosition.h"
 

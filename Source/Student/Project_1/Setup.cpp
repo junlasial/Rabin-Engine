@@ -13,17 +13,17 @@ void ProjectOne::setup()
     // You can change properties here or at runtime from a behavior tree leaf node
     // Look in Agent.h for all of the setters, like these:
     trafficlight->set_color(Vec3(0, 1, 0));
-    trafficlight->set_scaling(Vec3(1,3,3));
+    trafficlight->set_scaling(Vec3(2,3,2));
     trafficlight->set_position(Vec3(38, 0, 15));
     trafficlight->set_yaw(PI / 2);
 
     // Create an agent (using the default "Agent::AgentModel::Man" model)
-    auto trafficlight2 = agents->create_behavior_agent("TrafficLight2", BehaviorTreeTypes::TrafficLight);
+    auto trafficlight2 = agents->create_behavior_agent("TrafficLight", BehaviorTreeTypes::TrafficLight);
 
     // You can change properties here or at runtime from a behavior tree leaf node
     // Look in Agent.h for all of the setters, like these:
     trafficlight2->set_color(Vec3(0, 1, 0));
-    trafficlight2->set_scaling(Vec3(1, 3, 3));
+    trafficlight2->set_scaling(Vec3(2, 3, 2));
     trafficlight2->set_position(Vec3(58, 0, 98));
     trafficlight2->set_yaw(PI/4);
 
@@ -103,7 +103,7 @@ void ProjectOne::setup()
      Footballer1->set_color(Vec3(0.3, 0.9, 1));
      Footballer1->set_scaling(Vec3(1.5, 1.5, 1.5));
      Footballer1->set_position(Vec3(25, 0, 25));
-     Footballer1->set_movement_speed(10);
+     Footballer1->set_movement_speed(18);
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
@@ -114,7 +114,7 @@ void ProjectOne::setup()
      Footballer2->set_color(Vec3(1,0 , 0));
      Footballer2->set_scaling(Vec3(1.5, 1.5, 1.5));
      Footballer2->set_position(Vec3(25, 0, 75));
-     Footballer2->set_movement_speed(10);
+     Footballer2->set_movement_speed(18);
 
 
 
@@ -179,13 +179,7 @@ void ProjectOne::setup()
     auto a = car2->get_id();
    
 
-    //auto car3 = agents->create_behavior_agent("Mercedes", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
-    //// 5. (optional) Set other aspects to make it start out correctly
-    //car3->set_scaling(Vec3(1, 1, 1));
-    //car3->set_color(Vec3(0, 0, 1)); // Set the tree to green
-    //car3->set_position(Vec3(5, 0, 10));
-    //car3->set_movement_speed(25.0);
-  
+
     
 
 
@@ -193,14 +187,14 @@ void ProjectOne::setup()
     // 5. (optional) Set other aspects to make it start out correctly
     hut->set_scaling(Vec3(0.8, 0.8, 0.8));
     hut->set_color(Vec3(1, 0.7, 0));   // Set the tree to green
-    hut->set_position(Vec3(75, 0, 73));
+    hut->set_position(Vec3(75, 0, 67));
     hut->set_yaw(PI/2 );
 
     auto hut1 = agents->create_behavior_agent("ShoppingMall", BehaviorTreeTypes::Idle, Agent::AgentModel::Hut);
     // 5. (optional) Set other aspects to make it start out correctly
     hut1->set_scaling(Vec3(0.8, 0.8, 0.8));
     hut1->set_color(Vec3(1, 0.7, 0));   // Set the tree to green
-    hut1->set_position(Vec3(75, 0, 54));
+    hut1->set_position(Vec3(75, 0, 48));
     hut1->set_yaw(PI / 2);
 
 
@@ -208,7 +202,7 @@ void ProjectOne::setup()
     // 5. (optional) Set other aspects to make it start out correctly
     hut2->set_scaling(Vec3(0.8, 0.8, 0.8));
     hut2->set_color(Vec3(1, 0.7, 0));   // Set the tree to green
-    hut2->set_position(Vec3(75, 0, 35));
+    hut2->set_position(Vec3(75, 0, 29));
     hut2->set_yaw(PI / 2);
 
     auto tree = agents->create_behavior_agent("tree", BehaviorTreeTypes::Idle, Agent::AgentModel::Tree);
@@ -415,10 +409,10 @@ void ProjectOne::setup()
 
 
     // Sound control (these sound functions can be kicked off in a behavior tree node - see the example in L_PlaySound.cpp)
-    audioManager->SetVolume(0.5f);
-    audioManager->PlaySoundEffect(L"Assets\\Audio\\retro.wav");
+    audioManager->SetVolume(0.5f); 
+    //audioManager->PlaySoundEffect(L"Assets\\Audio\\retro.wav");
     // Uncomment for example on playing music in the engine (must be .wav)
-    audioManager->PlayMusic(L"Assets\\Audio\\motivate.wav");
+    audioManager->PlayMusic(L"Assets\\Audio\\backgroundmusic.wav");
     // audioManager->PauseMusic(...);
     // audioManager->ResumeMusic(...);
     // audioManager->StopMusic(...);

@@ -37,3 +37,8 @@ REGISTER_LEAF(L_Explore, "L_Explore")
 REGISTER_LEAF(L_GoHouse, "L_GoHouse")	
 REGISTER_LEAF(L_CreateBaby, "L_CreateBaby")	
 REGISTER_LEAF(L_Death, "L_Death")	
+REGISTER_LEAF(L_PlayCarHorn, "L_PlayCarHorn")	
+REGISTER_LEAF(L_PlayKickBall, "L_PlayKickBall")	
+REGISTER_LEAF(L_PlayTraffic, "L_PlayTraffic")	
+REGISTER_LEAF(L_FlyToRandomPosition, "L_FlyToRandomPosition")	
+

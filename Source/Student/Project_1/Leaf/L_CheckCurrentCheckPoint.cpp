@@ -15,9 +15,9 @@ void L_CheckCurrentCheckPoint::on_update(float dt)
     bb.set_value("CheckPoint4", Vec3{ 90,0,90 });
     bb.set_value("CheckPoint5", Vec3{ 45,0,10 });
     bb.set_value("CheckPoint6", Vec3{ 45,0,90 });
-    bb.set_value("ShoppingMall", Vec3{ 75, 0, 73 });
-    bb.set_value("ShoppingMall1", Vec3{ 75, 0, 54 });
-    bb.set_value("ShoppingMall2", Vec3{ 75, 0, 35 });
+    bb.set_value("ShoppingMall", Vec3{ 75, 0, 67 });
+    bb.set_value("ShoppingMall1", Vec3{ 75, 0, 48 });
+    bb.set_value("ShoppingMall2", Vec3{ 75, 0, 29 });
 
     const float range = 9.0f; // Define the range within which we consider the positions to be "equal"
 
