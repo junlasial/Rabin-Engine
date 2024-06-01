@@ -37,6 +37,8 @@ void D_CheckForCarEnter::on_enter()
                 if (distance <= 1)
                 {
                     enteredCar = true;
+
+                    a->set_scaling(Vec3{ 1, 0.8, 1 });
                   //  std::cout << "ENTERED" << std::endl;
                     BehaviorNode::on_enter();
                 }

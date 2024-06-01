@@ -24,16 +24,48 @@ void L_MoveToNearestCar::on_enter()
         {
             if (a->getAgentModel() == Agent::AgentModel::Car) {
 
+               
 
-                const auto& agentPos = a->get_position();
-                const float distance = Vec3::Distance(currPos, agentPos);
+                auto id = agent->get_id();
 
-                if (distance < longestDistance)
-                {
-                    longestDistance = distance;
-                    furthestPoint = agentPos;
-                    targetFound = true;
+                agent->set_scaling(Vec3{ 2,2,2 });
+
+                if (id == 0) {
+                    const auto& agentPos = a->get_position();
+                    const float distance = Vec3::Distance(currPos, agentPos);
+
+
+                    if (distance < longestDistance)
+                    {
+                        if (distance < 15) {
+                            agent->set_scaling(Vec3{ 1,1,1 });
+
+                        }
+                        longestDistance = distance;
+                        furthestPoint = agentPos;
+                        targetFound = true;
+                    }
                 }
+
+                if (id == 1) {
+                    const auto& agentPos = a->get_position();
+                    const float distance = Vec3::Distance(currPos, agentPos);
+
+
+                    if (distance < longestDistance)
+                    {
+
+                        if (distance < 15) {
+                            agent->set_scaling(Vec3{ 1,1,1 });
+
+                        }
+                        longestDistance = distance;
+                        furthestPoint = agentPos;
+                        targetFound = true;
+                    }
+                }
+
+
             }
 
            

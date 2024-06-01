@@ -38,20 +38,20 @@ void ProjectOne::setup()
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
      driver1->set_color(Vec3(1, 1, 1));
-     driver1->set_scaling(Vec3(1, 0.8, 1));
+     driver1->set_scaling(Vec3(1.5, 1.5, 1.5));
      driver1->set_position(Vec3(30, 0, 60));
-     driver1->set_movement_speed(30);
+     driver1->set_movement_speed(20);
 
 
-     // Create an agent (using the default "Agent::AgentModel::Man" model)
-     auto driver2 = agents->create_behavior_agent("Driver2", BehaviorTreeTypes::checkingnew1);
+     //// Create an agent (using the default "Agent::AgentModel::Man" model)
+     //auto driver2 = agents->create_behavior_agent("Driver", BehaviorTreeTypes::checkingnew1);
 
-     // You can change properties here or at runtime from a behavior tree leaf node
-     // Look in Agent.h for all of the setters, like these:
-     driver2->set_color(Vec3(1, 1, 1));
-     driver2->set_scaling(Vec3(1, 0.8, 1));
-     driver2->set_position(Vec3(80, 0, 20));
-     driver2->set_movement_speed(30);
+     //// You can change properties here or at runtime from a behavior tree leaf node
+     //// Look in Agent.h for all of the setters, like these:
+     //driver2->set_color(Vec3(1, 1, 1));
+     //driver2->set_scaling(Vec3(1.5, 1.5, 1.5));
+     //driver2->set_position(Vec3(80, 0, 20));
+     //driver2->set_movement_speed(20);
 
 
      // Create an agent (using the default "Agent::AgentModel::Man" model)
@@ -70,7 +70,7 @@ void ProjectOne::setup()
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
      Footballer1->set_color(Vec3(0, 0, 1));
-     Footballer1->set_scaling(Vec3(1, 1, 1));
+     Footballer1->set_scaling(Vec3(1.5, 1.5, 1.5));
      Footballer1->set_position(Vec3(25, 0, 25));
      Footballer1->set_movement_speed(10);
 
@@ -81,7 +81,7 @@ void ProjectOne::setup()
      // You can change properties here or at runtime from a behavior tree leaf node
      // Look in Agent.h for all of the setters, like these:
      Footballer2->set_color(Vec3(1,0 , 0));
-     Footballer2->set_scaling(Vec3(1, 1, 1));
+     Footballer2->set_scaling(Vec3(1.5, 1.5, 1.5));
      Footballer2->set_position(Vec3(25, 0, 75));
      Footballer2->set_movement_speed(10);
 
@@ -127,11 +127,11 @@ void ProjectOne::setup()
 
 
      //3. Create the agent, giving it the correct AgentModel type.
-    auto car1 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive2, Agent::AgentModel::Car);
+    auto car1 = agents->create_behavior_agent("Toyota", BehaviorTreeTypes::newdrive3, Agent::AgentModel::Car);
     // 4. (optional) You can also set the pitch of the model, if you want it to be rotated differently
   
     // 5. (optional) Set other aspects to make it start out correctly
-    car1->set_scaling(Vec3(1, 1, 1));
+    car1->set_scaling(Vec3(1.2, 1.2, 1.2));
     car1->set_color(Vec3(1, 0.3, 0.8));   //pink
     car1->set_position(Vec3(90, 0, 90));
     car1->set_yaw(3 * PI / 2);
@@ -144,7 +144,7 @@ void ProjectOne::setup()
     car2->set_scaling(Vec3(1, 1, 1));
     car2->set_color(Vec3(0, 0, 1)); // blue
     car2->set_position(Vec3(5, 0, 90));
-    car2->set_movement_speed(25.0);
+    car2->set_movement_speed(20.0);
     auto a = car2->get_id();
    
 

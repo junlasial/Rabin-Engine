@@ -8,7 +8,7 @@ void L_GoShopping::on_enter()
 
     const auto& bb = agent->get_blackboard();
     targetPoint = bb.get_value<Vec3>("ShoppingMall");
-
+    agent->set_scaling(Vec3{ 2,2,2 });
 
 
     BehaviorNode::on_leaf_enter();
@@ -32,7 +32,7 @@ void L_GoShopping::on_update(float dt)
 
             if (result == true)
             {
-               
+                agent->set_scaling(Vec3{ 1,1,1 });
                 // Start the waiting period
                 waitingForSuccess = true;
                 waitTime = 0.0f; // Reset the wait time
