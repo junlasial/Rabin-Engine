@@ -18,42 +18,23 @@ struct NodeComparator {
     }
 };
 
-
-
-
-
 class AStarPather
 {
 public:
-    /* 
-        The class should be default constructible, so you may need to define a constructor.
-        If needed, you can modify the framework where the class is constructed in the
-        initialize functions of ProjectTwo and ProjectThree.
-    */
-
-    /* ************************************************** */
-    // DO NOT MODIFY THESE SIGNATURES
     bool initialize();
     void shutdown();
-    PathResult compute_path(PathRequest &request);
-    /* ************************************************** */
-
-    /*
-        You should create whatever functions, variables, or classes you need.
-        It doesn't all need to be in this header and cpp, structure it whatever way
-        makes sense to you.
-    */
+    PathResult compute_path(PathRequest& request);
 
 private:
     void preallocate_nodes();
     void clear_nodes();
 
     std::vector<std::vector<Node>> nodes;
+    std::vector<std::list<Node*>> openList;
 
     static const int bucketCount = 100; // Example bucket count, adjust based on cost range
-    std::vector<std::list<Node*>> buckets;
-    float minCost;
-    float maxCost;
+    float minCost = 0.0f;
+    float maxCost = 1000.0f; // Example max cost, adjust based on your use case
     const float SQRT_2 = 1.41421356237f; // Precomputed value of sqrt(2)
 
     void push_to_open_list(Node* node);
@@ -61,7 +42,7 @@ private:
     void update_node_in_open_list(Node* node);
     int get_bucket_index(float cost);
 
+    bool is_diagonal_move_valid(const GridPos& current, const GridPos& next) const;
     float calculate_euclidean_distance(const GridPos& start, const GridPos& goal) const;
     float calculate_squared_euclidean_distance(const GridPos& start, const GridPos& goal) const;
-
 };

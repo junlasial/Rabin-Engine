@@ -21,38 +21,25 @@ bool ProjectTwo::implemented_jps_plus()
 
 bool AStarPather::initialize()
 {
-    // handle any one-time setup requirements you have
-
-    /*
-        If you want to do any map-preprocessing, you'll need to listen
-        for the map change message.  It'll look something like this:
-
-        Callback cb = std::bind(&AStarPather::your_function_name, this);
-        Messenger::listen_for_message(Messages::MAP_CHANGE, cb);
-
-        There are other alternatives to using std::bind, so feel free to mix it up.
-        Callback is just a typedef for std::function<void(void)>, so any std::invoke'able
-        object that std::function can wrap will suffice.
-    */
-
     // Preallocate nodes for the largest map (40x40)
     preallocate_nodes();
-    // Initialize buckets
-    buckets.resize(bucketCount);
 
+    // Initialize openList
+    openList.resize(bucketCount);
 
     // Debug: Check the dimensions of the preallocated nodes
     std::cout << "Node grid size: " << nodes.size() << " x " << nodes[0].size() << std::endl;
+
+    // Debug: Print a few nodes to verify
+    std::cout << "Node at (0,0): " << "finalCost=" << nodes[0][0].finalCost << ", givenCost=" << nodes[0][0].givenCost << ", onList=" << nodes[0][0].onList << std::endl;
+    std::cout << "Node at (39,39): " << "finalCost=" << nodes[39][39].finalCost << ", givenCost=" << nodes[39][39].givenCost << ", onList=" << nodes[39][39].onList << std::endl;
 
     return true;
 }
 
 void AStarPather::shutdown()
 {
-    /*
-        Free any dynamically allocated memory or any other general house-
-        keeping you need to do during shutdown.
-    */
+    // No dynamic allocation to free in this example
 }
 
 void AStarPather::preallocate_nodes()
@@ -68,24 +55,29 @@ void AStarPather::preallocate_nodes()
 
 void AStarPather::clear_nodes()
 {
+    for (auto& bucket : openList) {
+        bucket.clear();
+    }
     for (int row = 0; row < Terrain::maxMapHeight; ++row) {
         for (int col = 0; col < Terrain::maxMapWidth; ++col) {
-            nodes[row][col] = { nullptr, {row, col}, 0.0f, 0.0f, Node::NONE };
+            nodes[row][col].onList = Node::NONE;
+            nodes[row][col].parent = nullptr;
+            nodes[row][col].givenCost = 0.0f;
+            nodes[row][col].finalCost = 0.0f;
         }
     }
 }
 
-
 void AStarPather::push_to_open_list(Node* node)
 {
     int bucketIndex = get_bucket_index(node->finalCost);
-    buckets[bucketIndex].push_back(node);
+    openList[bucketIndex].push_back(node);
     node->onList = Node::OPEN;
 }
 
 Node* AStarPather::pop_from_open_list()
 {
-    for (auto& bucket : buckets) {
+    for (auto& bucket : openList) {
         if (!bucket.empty()) {
             Node* node = bucket.front();
             bucket.pop_front();
@@ -99,7 +91,7 @@ Node* AStarPather::pop_from_open_list()
 void AStarPather::update_node_in_open_list(Node* node)
 {
     int bucketIndex = get_bucket_index(node->finalCost);
-    auto& bucket = buckets[bucketIndex];
+    auto& bucket = openList[bucketIndex];
     bucket.remove(node); // Remove the old node
     bucket.push_back(node); // Add the updated node
 }
@@ -111,13 +103,28 @@ int AStarPather::get_bucket_index(float cost)
     return std::clamp(static_cast<int>(normalizedCost * bucketCount), 0, bucketCount - 1);
 }
 
+bool AStarPather::is_diagonal_move_valid(const GridPos& current, const GridPos& next) const
+{
+    int dx = next.col - current.col;
+    int dy = next.row - current.row;
 
+    if (dx != 0 && dy != 0) {
+        GridPos adjacent1 = { current.row, current.col + dx };
+        GridPos adjacent2 = { current.row + dy, current.col };
+
+        if (terrain->is_wall(adjacent1) || terrain->is_wall(adjacent2)) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 float AStarPather::calculate_euclidean_distance(const GridPos& start, const GridPos& goal) const
 {
     int dx = goal.col - start.col;
-    int dy = goal.row - start.row;
-    return static_cast<float>( std::sqrt(dx * dx + dy * dy));
+    int dy = goal.row - start.row; 
+        return static_cast<float>(std::sqrt(dx * dx + dy * dy));
 }
 
 float AStarPather::calculate_squared_euclidean_distance(const GridPos& start, const GridPos& goal) const
@@ -127,58 +134,68 @@ float AStarPather::calculate_squared_euclidean_distance(const GridPos& start, co
     return static_cast<float>(dx * dx + dy * dy);
 }
 
-PathResult AStarPather::compute_path(PathRequest &request)
+PathResult AStarPather::compute_path(PathRequest& request)
 {
-    /*
-        This is where you handle pathing requests, each request has several fields:
-
-        start/goal - start and goal world positions
-        path - where you will build the path upon completion, path should be
-            start to goal, not goal to start
-        heuristic - which heuristic calculation to use
-        weight - the heuristic weight to be applied
-        newRequest - whether this is the first request for this path, should generally
-            be true, unless single step is on
-
-        smoothing - whether to apply smoothing to the path
-        rubberBanding - whether to apply rubber banding
-        singleStep - whether to perform only a single A* step
-        debugColoring - whether to color the grid based on the A* state:
-            closed list nodes - yellow
-            open list nodes - blue
-
-            use terrain->set_color(row, col, Colors::YourColor);
-            also it can be helpful to temporarily use other colors for specific states
-            when you are testing your algorithms
-
-        method - which algorithm to use: A*, Floyd-Warshall, JPS+, or goal bounding,
-            will be A* generally, unless you implement extra credit features
-
-        The return values are:
-            PROCESSING - a path hasn't been found yet, should only be returned in
-                single step mode until a path is found
-            COMPLETE - a path to the goal was found and has been built in request.path
-            IMPOSSIBLE - a path from start to goal does not exist, do not add start position to path
-    */
-
-    // WRITE YOUR CODE HERE
-
-    
     // Clear nodes before each search
     clear_nodes();
 
-    // Example code
+    // Example code to demonstrate Euclidean distance calculation
     GridPos start = terrain->get_grid_position(request.start);
     GridPos goal = terrain->get_grid_position(request.goal);
 
-    // Calculate heuristic cost using Euclidean distance
-    float hCost = calculate_euclidean_distance(start, goal);
-    std::cout << "H_cost is : " << hCost << std::endl;
+    // Example of initializing and using nodes in the pathfinding algorithm
+    Node* startNode = &nodes[start.row][start.col];
+    Node* goalNode = &nodes[goal.row][goal.col];
 
+    startNode->givenCost = 0;
+    startNode->finalCost = calculate_euclidean_distance(start, goal);
+    push_to_open_list(startNode);
 
-    terrain->set_color(start, Colors::Orange);
-    terrain->set_color(goal, Colors::Orange);
-    request.path.push_back(request.start);
-    request.path.push_back(request.goal);
-    return PathResult::COMPLETE;
+    while (true) {
+        Node* currentNode = pop_from_open_list();
+        if (!currentNode || currentNode == goalNode) {
+            break;
+        }
+
+        for (int dRow = -1; dRow <= 1; ++dRow) {
+            for (int dCol = -1; dCol <= 1; ++dCol) {
+                if (dRow == 0 && dCol == 0) continue;
+
+                GridPos neighborPos = { currentNode->gridPos.row + dRow, currentNode->gridPos.col + dCol };
+
+                if (!terrain->is_valid_grid_position(neighborPos)) continue;
+                if (terrain->is_wall(neighborPos)) continue;
+                if (!is_diagonal_move_valid(currentNode->gridPos, neighborPos)) continue;
+
+                Node* neighborNode = &nodes[neighborPos.row][neighborPos.col];
+                float newGivenCost = currentNode->givenCost + calculate_euclidean_distance(currentNode->gridPos, neighborPos);
+
+                if (neighborNode->onList == Node::NONE || newGivenCost < neighborNode->givenCost) {
+                    neighborNode->givenCost = newGivenCost;
+                    neighborNode->finalCost = newGivenCost + calculate_euclidean_distance(neighborPos, goal);
+                    neighborNode->parent = currentNode;
+
+                    if (neighborNode->onList == Node::NONE) {
+                        push_to_open_list(neighborNode);
+                    }
+                    else {
+                        update_node_in_open_list(neighborNode);
+                    }
+                }
+            }
+        }
+    }
+
+    // Reconstruct the path
+    if (goalNode->parent != nullptr) {
+        Node* pathNode = goalNode;
+        while (pathNode != nullptr) {
+            request.path.push_back(terrain->get_world_position(pathNode->gridPos));
+            pathNode = pathNode->parent;
+        }
+        std::reverse(request.path.begin(), request.path.end());
+        return PathResult::COMPLETE;
+    }
+
+    return PathResult::IMPOSSIBLE;
 }
