@@ -400,6 +400,9 @@
     <ClInclude Include="Source\Student\Project_1\Leaf\L_FlyToRandomPosition.h">
       <Filter>Source\Student\Project_1\Leaf</Filter>
     </ClInclude>
+    <ClInclude Include="node.h">
+      <Filter>Source\Student\Project_2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Framework\Main.cpp">

@@ -184,6 +184,7 @@
     <ClInclude Include="L_MoveToCheckPoint2.h" />
     <ClInclude Include="L_MoveToCheckPoint3.h" />
     <ClInclude Include="L_MoveToNearestCar.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="Source\Framework\Agent\Agent.h" />
     <ClInclude Include="Source\Framework\Agent\AgentOrganizer.h" />
     <ClInclude Include="Source\Framework\Agent\BehaviorAgent.h" />

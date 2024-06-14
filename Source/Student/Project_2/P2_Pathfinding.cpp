@@ -35,7 +35,16 @@ bool AStarPather::initialize()
         object that std::function can wrap will suffice.
     */
 
-    return true; // return false if any errors actually occur, to stop engine initialization
+    // Preallocate nodes for the largest map (40x40)
+    preallocate_nodes();
+    // Initialize buckets
+    buckets.resize(bucketCount);
+
+
+    // Debug: Check the dimensions of the preallocated nodes
+    std::cout << "Node grid size: " << nodes.size() << " x " << nodes[0].size() << std::endl;
+
+    return true;
 }
 
 void AStarPather::shutdown()
@@ -44,6 +53,78 @@ void AStarPather::shutdown()
         Free any dynamically allocated memory or any other general house-
         keeping you need to do during shutdown.
     */
+}
+
+void AStarPather::preallocate_nodes()
+{
+    nodes.resize(Terrain::maxMapHeight, std::vector<Node>(Terrain::maxMapWidth));
+
+    for (int row = 0; row < Terrain::maxMapHeight; ++row) {
+        for (int col = 0; col < Terrain::maxMapWidth; ++col) {
+            nodes[row][col] = { nullptr, {row, col}, 0.0f, 0.0f, Node::NONE };
+        }
+    }
+}
+
+void AStarPather::clear_nodes()
+{
+    for (int row = 0; row < Terrain::maxMapHeight; ++row) {
+        for (int col = 0; col < Terrain::maxMapWidth; ++col) {
+            nodes[row][col] = { nullptr, {row, col}, 0.0f, 0.0f, Node::NONE };
+        }
+    }
+}
+
+
+void AStarPather::push_to_open_list(Node* node)
+{
+    int bucketIndex = get_bucket_index(node->finalCost);
+    buckets[bucketIndex].push_back(node);
+    node->onList = Node::OPEN;
+}
+
+Node* AStarPather::pop_from_open_list()
+{
+    for (auto& bucket : buckets) {
+        if (!bucket.empty()) {
+            Node* node = bucket.front();
+            bucket.pop_front();
+            node->onList = Node::CLOSED;
+            return node;
+        }
+    }
+    return nullptr; // This should not happen if called correctly
+}
+
+void AStarPather::update_node_in_open_list(Node* node)
+{
+    int bucketIndex = get_bucket_index(node->finalCost);
+    auto& bucket = buckets[bucketIndex];
+    bucket.remove(node); // Remove the old node
+    bucket.push_back(node); // Add the updated node
+}
+
+int AStarPather::get_bucket_index(float cost)
+{
+    // Normalize cost to bucket index
+    float normalizedCost = (cost - minCost) / (maxCost - minCost);
+    return std::clamp(static_cast<int>(normalizedCost * bucketCount), 0, bucketCount - 1);
+}
+
+
+
+float AStarPather::calculate_euclidean_distance(const GridPos& start, const GridPos& goal) const
+{
+    int dx = goal.col - start.col;
+    int dy = goal.row - start.row;
+    return static_cast<float>( std::sqrt(dx * dx + dy * dy));
+}
+
+float AStarPather::calculate_squared_euclidean_distance(const GridPos& start, const GridPos& goal) const
+{
+    int dx = goal.col - start.col;
+    int dy = goal.row - start.row;
+    return static_cast<float>(dx * dx + dy * dy);
 }
 
 PathResult AStarPather::compute_path(PathRequest &request)
@@ -83,9 +164,18 @@ PathResult AStarPather::compute_path(PathRequest &request)
     // WRITE YOUR CODE HERE
 
     
-    // Just sample code, safe to delete
+    // Clear nodes before each search
+    clear_nodes();
+
+    // Example code
     GridPos start = terrain->get_grid_position(request.start);
     GridPos goal = terrain->get_grid_position(request.goal);
+
+    // Calculate heuristic cost using Euclidean distance
+    float hCost = calculate_euclidean_distance(start, goal);
+    std::cout << "H_cost is : " << hCost << std::endl;
+
+
     terrain->set_color(start, Colors::Orange);
     terrain->set_color(goal, Colors::Orange);
     request.path.push_back(request.start);
