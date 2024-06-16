@@ -123,15 +123,50 @@ bool AStarPather::is_diagonal_move_valid(const GridPos& current, const GridPos& 
 float AStarPather::calculate_euclidean_distance(const GridPos& start, const GridPos& goal) const
 {
     int dx = goal.col - start.col;
-    int dy = goal.row - start.row; 
-        return static_cast<float>(std::sqrt(dx * dx + dy * dy));
+    int dy = goal.row - start.row;
+    return static_cast<float>(std::sqrt(dx * dx + dy * dy));
 }
 
 float AStarPather::calculate_squared_euclidean_distance(const GridPos& start, const GridPos& goal) const
 {
-    int dx = goal.col - start.col;
-    int dy = goal.row - start.row;
+    int dx = std::abs(goal.col - start.col);
+    int dy = std::abs(goal.row - start.row);
     return static_cast<float>(dx * dx + dy * dy);
+}
+
+float AStarPather::calculate_octile_distance(const GridPos& start, const GridPos& goal) const {
+    int dx = std::abs(goal.col - start.col);
+    int dy = std::abs(goal.row - start.row);
+    return static_cast<float>((std::min(dx, dy) * 14) + (std::max(dx, dy) - std::min(dx, dy)) * 10);
+}
+
+float AStarPather::calculate_manhattan_distance(const GridPos& start, const GridPos& goal) const {
+    int dx = std::abs(goal.col - start.col);
+    int dy = std::abs(goal.row - start.row);
+    return static_cast<float>(dx * 10 + dy * 10);
+}
+
+float AStarPather::calculate_chebyshev_distance(const GridPos& start, const GridPos& goal) const {
+    int dx = std::abs(goal.col - start.col);
+    int dy = std::abs(goal.row - start.row);
+    return static_cast<float>(std::max(dx, dy) * 10);
+}
+
+float AStarPather::calculate_heuristic(const GridPos& start, const GridPos& goal, Heuristic heuristic) const {
+    switch (heuristic) {
+    case Heuristic::EUCLIDEAN:
+        return calculate_euclidean_distance(start, goal);
+    case Heuristic::OCTILE:
+        return calculate_octile_distance(start, goal);
+    case Heuristic::MANHATTAN:
+        return calculate_manhattan_distance(start, goal);
+    case Heuristic::CHEBYSHEV:
+        return calculate_chebyshev_distance(start, goal);
+    case Heuristic::INCONSISTENT:
+        return calculate_euclidean_distance(start, goal);
+    default:
+        return 0.0f;
+    }
 }
 
 PathResult AStarPather::compute_path(PathRequest& request)
@@ -139,16 +174,14 @@ PathResult AStarPather::compute_path(PathRequest& request)
     // Clear nodes before each search
     clear_nodes();
 
-    // Example code to demonstrate Euclidean distance calculation
     GridPos start = terrain->get_grid_position(request.start);
     GridPos goal = terrain->get_grid_position(request.goal);
 
-    // Example of initializing and using nodes in the pathfinding algorithm
     Node* startNode = &nodes[start.row][start.col];
     Node* goalNode = &nodes[goal.row][goal.col];
 
     startNode->givenCost = 0;
-    startNode->finalCost = calculate_euclidean_distance(start, goal);
+    startNode->finalCost = calculate_heuristic(start, goal, request.settings.heuristic);
     push_to_open_list(startNode);
 
     while (true) {
@@ -168,11 +201,12 @@ PathResult AStarPather::compute_path(PathRequest& request)
                 if (!is_diagonal_move_valid(currentNode->gridPos, neighborPos)) continue;
 
                 Node* neighborNode = &nodes[neighborPos.row][neighborPos.col];
-                float newGivenCost = currentNode->givenCost + calculate_euclidean_distance(currentNode->gridPos, neighborPos);
+                float moveCost = (dRow == 0 || dCol == 0) ? 10.0f : 14.0f; // Cost is 10 for straight and 14 for diagonal
+                float newGivenCost = currentNode->givenCost + moveCost;
 
                 if (neighborNode->onList == Node::NONE || newGivenCost < neighborNode->givenCost) {
                     neighborNode->givenCost = newGivenCost;
-                    neighborNode->finalCost = newGivenCost + calculate_euclidean_distance(neighborPos, goal);
+                    neighborNode->finalCost = newGivenCost + calculate_heuristic(neighborPos, goal, request.settings.heuristic);
                     neighborNode->parent = currentNode;
 
                     if (neighborNode->onList == Node::NONE) {
@@ -186,7 +220,6 @@ PathResult AStarPather::compute_path(PathRequest& request)
         }
     }
 
-    // Reconstruct the path
     if (goalNode->parent != nullptr) {
         Node* pathNode = goalNode;
         while (pathNode != nullptr) {

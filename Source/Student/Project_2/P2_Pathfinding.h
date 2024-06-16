@@ -45,4 +45,8 @@ private:
     bool is_diagonal_move_valid(const GridPos& current, const GridPos& next) const;
     float calculate_euclidean_distance(const GridPos& start, const GridPos& goal) const;
     float calculate_squared_euclidean_distance(const GridPos& start, const GridPos& goal) const;
+    float calculate_octile_distance(const GridPos& start, const GridPos& goal) const;
+    float calculate_heuristic(const GridPos& start, const GridPos& goal, Heuristic heuristic) const;
+    float calculate_manhattan_distance(const GridPos& start, const GridPos& goal) const;
+    float calculate_chebyshev_distance(const GridPos& start, const GridPos& goal) const;
 };
