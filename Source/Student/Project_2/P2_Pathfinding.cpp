@@ -127,18 +127,13 @@ float AStarPather::calculate_euclidean_distance(const GridPos& start, const Grid
     return static_cast<float>(std::sqrt(dx * dx + dy * dy));
 }
 
-float AStarPather::calculate_squared_euclidean_distance(const GridPos& start, const GridPos& goal) const
-{
-    int dx = std::abs(goal.col - start.col);
-    int dy = std::abs(goal.row - start.row);
-    return static_cast<float>(dx * dx + dy * dy);
-}
 
 float AStarPather::calculate_octile_distance(const GridPos& start, const GridPos& goal) const {
     int dx = std::abs(goal.col - start.col);
     int dy = std::abs(goal.row - start.row);
-    return static_cast<float>((std::min(dx, dy) * 14) + (std::max(dx, dy) - std::min(dx, dy)) * 10);
+    return static_cast<float>(std::min(dx, dy) * 14 + (std::max(dx, dy) - std::min(dx, dy)) * 10); // Ensure the multipliers reflect your costs.
 }
+
 
 float AStarPather::calculate_manhattan_distance(const GridPos& start, const GridPos& goal) const {
     int dx = std::abs(goal.col - start.col);
@@ -149,25 +144,40 @@ float AStarPather::calculate_manhattan_distance(const GridPos& start, const Grid
 float AStarPather::calculate_chebyshev_distance(const GridPos& start, const GridPos& goal) const {
     int dx = std::abs(goal.col - start.col);
     int dy = std::abs(goal.row - start.row);
-    return static_cast<float>(std::max(dx, dy) * 10);
+    //std::cout << goal.col << " , " << goal.row << std::endl;
+  
+    return static_cast<float>(std::max(dx, dy) * 10); // Ensure the multiplier reflects your straight move cost.
 }
+
+
+float AStarPather::calculate_inconsistent(const GridPos& cur, const GridPos& goal) const
+{
+    if ((cur.row + cur.col) % 2 > 0)
+    {
+    
+        return calculate_euclidean_distance(cur, goal);
+    }
+    return 0.0f;
+}
+
 
 float AStarPather::calculate_heuristic(const GridPos& start, const GridPos& goal, Heuristic heuristic) const {
     switch (heuristic) {
     case Heuristic::EUCLIDEAN:
         return calculate_euclidean_distance(start, goal);
     case Heuristic::OCTILE:
-        return calculate_octile_distance(start, goal);
+        return calculate_euclidean_distance(start, goal);
     case Heuristic::MANHATTAN:
         return calculate_manhattan_distance(start, goal);
     case Heuristic::CHEBYSHEV:
-        return calculate_chebyshev_distance(start, goal);
-    case Heuristic::INCONSISTENT:
         return calculate_euclidean_distance(start, goal);
+    case Heuristic::INCONSISTENT:
+        return calculate_inconsistent(start, goal);
     default:
         return 0.0f;
     }
 }
+
 
 PathResult AStarPather::compute_path(PathRequest& request)
 {
@@ -182,6 +192,7 @@ PathResult AStarPather::compute_path(PathRequest& request)
 
     startNode->givenCost = 0;
     startNode->finalCost = calculate_heuristic(start, goal, request.settings.heuristic);
+    std::cout<< calculate_heuristic(start, goal, request.settings.heuristic)<<std::endl;
     push_to_open_list(startNode);
 
     while (true) {
