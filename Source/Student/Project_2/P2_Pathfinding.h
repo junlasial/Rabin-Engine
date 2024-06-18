@@ -61,7 +61,8 @@ private:
     std::vector<Node*> get_neighbors(Node* node);
     float distance_between(Node* a, Node* b) const;
 
-
+    void rubberbanding(std::deque<GridPos>& path);
+    bool is_valid_direct_path(const GridPos& start, const GridPos& end);
     // Add any additional private member variables or methods here
 };
 

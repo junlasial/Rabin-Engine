@@ -1,24 +1,14 @@
 #include <pch.h>
 #include "Projects/ProjectTwo.h"
 #include "P2_Pathfinding.h"
+#include <queue>
+#include <unordered_set>
 
 #pragma region Extra Credit
-bool ProjectTwo::implemented_floyd_warshall()
-{
-    return false;
-}
-
-bool ProjectTwo::implemented_goal_bounding()
-{
-    return false;
-}
-
-bool ProjectTwo::implemented_jps_plus()
-{
-    return false;
-}
+bool ProjectTwo::implemented_floyd_warshall() { return false; }
+bool ProjectTwo::implemented_goal_bounding() { return false; }
+bool ProjectTwo::implemented_jps_plus() { return false; }
 #pragma endregion
-
 
 
 // Constructor
@@ -68,6 +58,10 @@ PathResult AStarPather::compute_path(PathRequest& request) {
     // Main A* loop
     while (!openList.empty()) {
         Node* currentNode = pop_cheapest_node();
+        if (request.settings.debugColoring) {
+            terrain->set_color(currentNode->gridPos, Colors::Yellow);
+        }
+
         if (currentNode->gridPos == goal) {
             // Path found, reconstruct the path
             Node* node = currentNode;
@@ -91,6 +85,9 @@ PathResult AStarPather::compute_path(PathRequest& request) {
 
                 if (neighbor->onList == Node::NONE) {
                     push_node(neighbor);
+                    if (request.settings.debugColoring) {
+                        terrain->set_color(neighbor->gridPos, Colors::Blue);
+                    }
                 }
                 else {
                     update_node(neighbor);
@@ -109,7 +106,7 @@ void AStarPather::clear_nodes() {
             nodes[i][j].parent = nullptr;
             nodes[i][j].finalCost = 0.0f;
             nodes[i][j].givenCost = 0.0f;
-            nodes[i][j].onList = Node::NONE;
+            nodes[i][j].onList = Node::NONE; // Ensure enum is set to NONE
         }
     }
     openList.clear();
@@ -117,8 +114,6 @@ void AStarPather::clear_nodes() {
 
 Node* AStarPather::pop_cheapest_node() {
     if (openList.empty()) {
-
-
         return nullptr;
     }
 
@@ -130,14 +125,11 @@ Node* AStarPather::pop_cheapest_node() {
     Node* cheapestNode = *cheapestNodeIter;
     openList.erase(cheapestNodeIter); // Remove the node from the open list
 
-    terrain->set_color(cheapestNode->gridPos, Colors::Yellow);
     return cheapestNode;
 }
 
 void AStarPather::push_node(Node* node) {
     openList.push_back(node);
-
-    terrain->set_color(node->gridPos, Colors::Blue);
     node->onList = Node::OPEN;
 }
 
@@ -171,31 +163,25 @@ float AStarPather::octile_heuristic(const GridPos& a, const GridPos& b) const {
     return std::max(dx, dy) + (SQRT_2 - 1) * std::min(dx, dy);
 }
 
-
 float AStarPather::inconsistent_heuristic(const GridPos& a, const GridPos& b) const {
-
-    if ((a.row + a.col) % 2 > 0) {
-
-
+    if ((b.row + b.col) % 2 > 0) {
         return euclidean_heuristic(a, b);
     }
-
     return 0;
-
 }
 
 float AStarPather::calculate_heuristic(const GridPos& a, const GridPos& b, Heuristic heuristic) const {
     switch (heuristic) {
     case Heuristic::OCTILE:
         return octile_heuristic(a, b);
-    case Heuristic::EUCLIDEAN:
-        return euclidean_heuristic(a, b);
-    case Heuristic::MANHATTAN:
-        return manhattan_heuristic(a, b);
     case Heuristic::CHEBYSHEV:
         return chebyshev_heuristic(a, b);
     case Heuristic::INCONSISTENT:
         return inconsistent_heuristic(a, b);
+    case Heuristic::MANHATTAN:
+        return manhattan_heuristic(a, b);
+    case Heuristic::EUCLIDEAN:
+        return euclidean_heuristic(a, b);
     default:
         return 0.0f; // Default heuristic if none is specified
     }
@@ -213,7 +199,7 @@ std::vector<Node*> AStarPather::get_neighbors(Node* node) {
             int newRow = row + i;
             int newCol = col + j;
 
-            // Skip if the new position is invalid
+            // Skip if the new position is invalid or a wall
             if (!terrain->is_valid_grid_position(newRow, newCol) || terrain->is_wall(newRow, newCol)) continue;
 
             // Skip diagonal movements that cut through walls
@@ -240,3 +226,5 @@ float AStarPather::distance_between(Node* a, Node* b) const {
         return 1.0f;
     }
 }
+
+
