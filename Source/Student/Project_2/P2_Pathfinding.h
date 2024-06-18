@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include "SimpleMath.h"
 
 // Define a constant for sqrt(2)
 const float SQRT_2 = 1.41421356237f;
@@ -71,6 +72,16 @@ private:
 
     void apply_rubberbanding(std::list<Vec3>& path);
     bool is_clear_path(const Vec3& start, const Vec3& end) const;
+
+    void apply_catmull_rom_spline(std::list<Vec3>& path);
+
+    void add_intermediate_points(std::list<Vec3>& path, float maxDistance);
+
+
+    float distance(const Vec3& p1, const Vec3& p2) {
+        Vec3 diff = p1 - p2;
+        return diff.Length();
+    }
 
 
 };

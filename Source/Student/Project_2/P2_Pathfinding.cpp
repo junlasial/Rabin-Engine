@@ -82,6 +82,10 @@ PathResult AStarPather::compute_path(PathRequest& request) {
                 apply_rubberbanding(request.path);
             }
       
+            if (request.settings.smoothing) {
+                add_intermediate_points(request.path, 1.5f);
+                apply_catmull_rom_spline(request.path);
+            }
 
             is_initialized = false;
             return PathResult::COMPLETE;
@@ -235,34 +239,30 @@ void AStarPather::calculate_all_neighbors() {
 
 void AStarPather::apply_rubberbanding(std::list<Vec3>& path) {
     // If the path has less than 3 points, rubberbanding is not needed.
-    if (path.size() < 3) {
-        return;
-    }
 
     // Initialize iterators for traversing the path.
     auto current = path.begin();
-    auto next = std::next(current);
     auto end = path.end();
 
     // Loop through the path until the end is reached.
-    while (next != end) {
+    while (current != end) {
+        auto next = std::next(current);
         auto after_next = std::next(next);
 
-        // Check if there is a clear path from 'current' to 'after_next'.
-        while (after_next != end && is_clear_path(*current, *after_next)) {
-            // If there is a clear path, move 'next' forward to 'after_next'.
-            next = after_next;
-            after_next = std::next(next);
+        // Check if we have at least three nodes.
+        if (after_next == end) {
+            break;
         }
 
-        // Move 'current' forward and erase intermediate points.
-        ++current;
-        if (current != next) {
-            path.erase(current, next); // Remove points between 'current' and 'next'.
+        // Check if there is a clear path from 'current' to 'after_next'.
+        if (is_clear_path(*current, *after_next)) {
+            // If there is a clear path, erase the middle node.
+            path.erase(next);
         }
-        // Update 'current' to 'next' and continue.
-        current = next;
-        next = std::next(current);
+        else {
+            // Otherwise, move the iterators forward.
+            ++current;
+        }
     }
 }
 
@@ -312,3 +312,67 @@ bool AStarPather::is_clear_path(const Vec3& start, const Vec3& end) const {
     // If no walls are found, return true.
     return true;
 }
+
+void AStarPather::apply_catmull_rom_spline(std::list<Vec3>& path) {
+    // If the path has less than 4 points, spline interpolation is not needed.
+    if (path.size() < 4) {
+        return;
+    }
+
+    std::list<Vec3> newPath;
+    auto it = path.begin();
+    auto prev = it++;
+    auto curr = it++;
+    auto next = it++;
+    auto afterNext = it;
+
+    // Insert the first point
+    newPath.push_back(*prev);
+
+    // Interpolate between each set of four points
+    while (afterNext != path.end()) {
+        for (float t = 0; t < 1.0f; t += 0.5f) { // Adjust the step size for smoother curves
+            DirectX::SimpleMath::Vector3 interpolatedPoint = DirectX::SimpleMath::Vector3::CatmullRom(
+                DirectX::SimpleMath::Vector3(prev->x, prev->y, prev->z),
+                DirectX::SimpleMath::Vector3(curr->x, curr->y, curr->z),
+                DirectX::SimpleMath::Vector3(next->x, next->y, next->z),
+                DirectX::SimpleMath::Vector3(afterNext->x, afterNext->y, afterNext->z),
+                t
+            );
+            newPath.push_back(Vec3(interpolatedPoint.x, interpolatedPoint.y, interpolatedPoint.z));
+        }
+        prev = curr;
+        curr = next;
+        next = afterNext;
+        ++afterNext;
+    }
+
+    // Insert the last point
+    newPath.push_back(*next);
+
+    // Replace the original path with the new path
+    path = newPath;
+}
+
+
+void AStarPather::add_intermediate_points(std::list<Vec3>& path, float maxDistance) {
+    auto current = path.begin();
+    auto end = path.end();
+
+    while (current != end) {
+        auto next = std::next(current);
+        if (next == end) {
+            break;
+        }
+
+        float dist = distance(*current, *next);
+        while (dist > maxDistance) {
+            Vec3 intermediatePoint = (*current + *next) * 0.5f;
+            next = path.insert(next, intermediatePoint);
+            dist = distance(*current, *next);
+        }
+        ++current;
+    }
+}
+
+
