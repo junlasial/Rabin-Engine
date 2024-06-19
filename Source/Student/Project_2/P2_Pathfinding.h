@@ -1,53 +1,80 @@
 #pragma once
+
 #include "Misc/PathfindingDetails.hpp"
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include "SimpleMath.h"
 
+// Define a constant for sqrt(2) cuz less expensive
+const float SQRT_2 = 1.41421356237f;
 
+// Define the node structure for the A* algorithm
 struct Node {
-    Node* parent;
-    GridPos gridPos;
-    float finalCost;
-    float givenCost;
-    enum OnList { NONE, OPEN, CLOSED } onList;
+    Node* parent;        // Parent node in the path
+    GridPos gridPos;     // Node's position on the grid
+    std::vector<Node*> neighbors; // Neighbors precomputed
+    float finalCost;     // f(x) = g(x) + h(x) --> g(x) is the given cost and h(x) is the heuristic 
+    float givenCost;     // g(x), the cost from the start node to this node
+    enum OnList { NONE, OPEN, CLOSED } onList;  // Enum to track if the node is on the open or closed list
+
+    // Constructor to initialize the node
+    Node(GridPos pos = { 0, 0 }, Node* parentNode = nullptr)
+        : parent(parentNode), gridPos(pos), finalCost(0.0f), givenCost(0.0f), onList(NONE) {}
 };
 
-
-
-struct NodeComparator {
-    bool operator()(const Node* lhs, const Node* rhs) const {
-        return lhs->finalCost > rhs->finalCost;
-    }
-};
-
-class AStarPather
-{
+// AStarPather class definition
+class AStarPather {
 public:
+    // Default constructor
+    AStarPather();
+
+    // Initialization and shutdown methods
     bool initialize();
     void shutdown();
+
+    // Path computation method
     PathResult compute_path(PathRequest& request);
 
 private:
-    void preallocate_nodes();
+    // 2D array to store nodes
+    static const int MAX_GRID_SIZE = 40;
+    Node nodes[MAX_GRID_SIZE][MAX_GRID_SIZE];  // Largest member
+
+    // Open list to store pointers to nodes
+    std::vector<Node*> list_Open;  // Vector of pointers
+
+    Node* current_node;  // Pointer to the current node
+    PathRequest* current_request;  // Pointer to the current path request
+
+    bool is_initialized;  // Boolean flag
+
+    GridPos start;  // Start position (assuming GridPos is small)
+    GridPos goalPos;  // Goal position (assuming GridPos is small)
+
+    // Method to clear the nodes before each search
     void clear_nodes();
 
-    std::vector<std::vector<Node>> nodes;
-    std::vector<std::list<Node*>> openList;
+    // Methods to manage the open list
+    Node* pop_cheapest_node();
+    void push_node(Node* node);
 
-    static const int bucketCount = 100; // Example bucket count, adjust based on cost range
-    float minCost = 0.0f;
-    float maxCost = 1000.0f; // Example max cost, adjust based on your use case
-    const float SQRT_2 = 1.41421356237f; // Precomputed value of sqrt(2)
+    //Calculate all heuristic inside this funciton, rmemoved old functions to ake it compact
+    float calculate_heuristic(const GridPos& a, const GridPos& b, Heuristic heuristic) const;
 
-    void push_to_open_list(Node* node);
-    Node* pop_from_open_list();
-    void update_node_in_open_list(Node* node);
-    int get_bucket_index(float cost);
+    std::vector<Node*> get_neighbors(Node* node);
+    float distance_between(Node* a, Node* b) const;
+    void calculate_all_neighbors();
+    void on_map_change();
 
-    bool is_diagonal_move_valid(const GridPos& current, const GridPos& next) const;
-    float calculate_euclidean_distance(const GridPos& start, const GridPos& goal) const;
-    float calculate_octile_distance(const GridPos& start, const GridPos& goal) const;
-    float calculate_heuristic(const GridPos& start, const GridPos& goal, Heuristic heuristic) const;
-    float calculate_manhattan_distance(const GridPos& start, const GridPos& goal) const;
-    float calculate_chebyshev_distance(const GridPos& start, const GridPos& goal) const;
-    float calculate_inconsistent(const GridPos& cur, const GridPos& goal) const;
+    void apply_rubberbanding(std::list<Vec3>& path);
+    bool is_clear_path(const Vec3& start, const Vec3& end) const;
 
+    void apply_catmull_rom_spline(std::list<Vec3>& path);
+    void add_intermediate_points(std::list<Vec3>& path, float maxDistance);
+
+    float distance(const Vec3& p1, const Vec3& p2) {
+        Vec3 diff = p1 - p2;
+        return diff.Length();
+    }
 };
