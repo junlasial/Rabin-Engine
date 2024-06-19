@@ -4,6 +4,7 @@
 #include <queue>
 #include <unordered_set>
 #include <cmath>
+#include <functional>
 
 #pragma region Extra Credit
 bool ProjectTwo::implemented_floyd_warshall() { return false; }
@@ -11,11 +12,19 @@ bool ProjectTwo::implemented_goal_bounding() { return false; }
 bool ProjectTwo::implemented_jps_plus() { return false; }
 #pragma endregion
 
+
+
 // Constructor
-AStarPather::AStarPather() : is_initialized(false), current_node(nullptr), current_request(nullptr) {
+AStarPather::AStarPather()
+    : is_initialized(false),
+    current_node(nullptr),
+    current_request(nullptr),
+    start({ 0, 0 }),
+    goalPos({ 0, 0 })
+{
     // Initialize the nodes array with default nodes
-    for (int i = 0; i < MAX_SIZE; ++i) {
-        for (int j = 0; j < MAX_SIZE; ++j) {
+    for (int i = 0; i < MAX_GRID_SIZE; ++i) {
+        for (int j = 0; j < MAX_GRID_SIZE; ++j) {
             nodes[i][j] = Node({ i, j });
         }
     }
@@ -23,11 +32,14 @@ AStarPather::AStarPather() : is_initialized(false), current_node(nullptr), curre
 
 bool AStarPather::initialize() {
     // Callback for map change
+
+    //This is to cehck for neighbour not on run time but before
     Callback cb = std::bind(&AStarPather::on_map_change, this);
     Messenger::listen_for_message(Messages::MAP_CHANGE, cb);
     return true;
 }
 
+//Calculate the neihbours
 void AStarPather::on_map_change() {
     calculate_all_neighbors();
 }
@@ -37,13 +49,16 @@ void AStarPather::shutdown() {
 }
 
 PathResult AStarPather::compute_path(PathRequest& request) {
+    // Initialize the search if not already done
     if (!is_initialized) {
+        // Clear any previous node data
         clear_nodes();
 
-        // Convert start and goal to grid positions
+        // Get start and goal positions in the grid
         start = terrain->get_grid_position(request.start);
         goalPos = terrain->get_grid_position(request.goal);
 
+        // Immediate completion if start is the same as goal
         if (start == goalPos) {
             request.path.push_front(request.start);
             return PathResult::COMPLETE;
@@ -60,28 +75,31 @@ PathResult AStarPather::compute_path(PathRequest& request) {
         is_initialized = true;
     }
 
-    while (!openList.empty()) {
+    // Main search loop
+    while (!list_Open.empty()) {
+        // Select the node with the lowest cost to process
         if (!current_node) {
             current_node = pop_cheapest_node();
         }
 
+        // Debug coloring for current node
         if (request.settings.debugColoring) {
             terrain->set_color(current_node->gridPos, Colors::Yellow);
         }
 
+        // Check if the goal has been reached
         if (current_node->gridPos == goalPos) {
-            // Path found, reconstruct the path
+            // Reconstruct the path from goal to start
             Node* node = current_node;
             while (node) {
                 request.path.push_front(terrain->get_world_position(node->gridPos));
                 node = node->parent;
             }
 
-           
+            // Apply path post-processing if needed
             if (request.settings.rubberBanding) {
                 apply_rubberbanding(request.path);
             }
-      
             if (request.settings.smoothing) {
                 add_intermediate_points(request.path, 1.5f);
                 apply_catmull_rom_spline(request.path);
@@ -91,17 +109,19 @@ PathResult AStarPather::compute_path(PathRequest& request) {
             return PathResult::COMPLETE;
         }
 
-        // Generate neighbors and process each
+        // Process neighboring nodes
         std::vector<Node*> neighbors = get_neighbors(current_node);
         for (Node* neighbor : neighbors) {
             if (neighbor->onList == Node::CLOSED) continue;
 
+            // Calculate the tentative given cost for the neighbor
             float tentativeGivenCost = current_node->givenCost + distance_between(current_node, neighbor);
             if (tentativeGivenCost < neighbor->givenCost || neighbor->onList == Node::NONE) {
                 neighbor->givenCost = tentativeGivenCost;
                 neighbor->finalCost = tentativeGivenCost + calculate_heuristic(neighbor->gridPos, goalPos, request.settings.heuristic);
                 neighbor->parent = current_node;
 
+                // Push the neighbor to the open list if it's not already there
                 if (neighbor->onList == Node::NONE) {
                     push_node(neighbor);
                     if (request.settings.debugColoring) {
@@ -114,87 +134,86 @@ PathResult AStarPather::compute_path(PathRequest& request) {
             }
         }
 
+        // Mark the current node as closed and reset it
         current_node->onList = Node::CLOSED;
         current_node = nullptr;
 
+        // If single step processing is enabled, return for now
         if (request.settings.singleStep) {
             return PathResult::PROCESSING;
         }
     }
 
+    // If the open list is empty and no path was found
     is_initialized = false;
     return PathResult::IMPOSSIBLE;
 }
 
+
+
+
 void AStarPather::clear_nodes() {
-    for (int i = 0; i < MAX_SIZE; ++i) {
-        for (int j = 0; j < MAX_SIZE; ++j) {
-            nodes[i][j].parent = nullptr;
-            nodes[i][j].finalCost = 0.0f;
-            nodes[i][j].givenCost = 0.0f;
-            nodes[i][j].onList = Node::NONE;
+
+    //reset all the nodes 
+    for (auto& row : nodes) {
+        for (auto& node : row) {
+            node.parent = nullptr;
+            node.finalCost = 0.0f;
+            node.givenCost = 0.0f;
+            node.onList = Node::NONE;
         }
     }
-    openList.clear();
+    list_Open.clear();
 }
 
+
 Node* AStarPather::pop_cheapest_node() {
-    if (openList.empty()) {
+    if (list_Open.empty()) {
         return nullptr;
     }
 
-    // Find the node with the smallest finalCost in the open list
-    auto cheapestNodeIter = std::min_element(openList.begin(), openList.end(), [](Node* a, Node* b) {
-        return a->finalCost < b->finalCost;
-        });
-
+    // Initialize the iterator to the first element
+    auto cheapestNodeIter = list_Open.begin();
     Node* cheapestNode = *cheapestNodeIter;
-    openList.erase(cheapestNodeIter);
+
+    // Iterate through the list to find the node with the smallest finalCost
+    for (auto it = list_Open.begin(); it != list_Open.end(); ++it) {
+        if ((*it)->finalCost < cheapestNode->finalCost) {
+            cheapestNodeIter = it;
+            cheapestNode = *it;
+        }
+    }
+
+    // Erase the cheapest node from the open list
+    list_Open.erase(cheapestNodeIter);
 
     return cheapestNode;
 }
 
+
 void AStarPather::push_node(Node* node) {
-    openList.push_back(node);
+    list_Open.push_back(node);
     node->onList = Node::OPEN;
-}
-
-float AStarPather::euclidean_heuristic(const GridPos& a, const GridPos& b) const {
-    float dx = static_cast<float>(a.col - b.col);
-    float dy = static_cast<float>(a.row - b.row);
-    return std::sqrt(dx * dx + dy * dy);
-}
-
-float AStarPather::manhattan_heuristic(const GridPos& a, const GridPos& b) const {
-    return static_cast<float>(std::abs(a.col - b.col) + std::abs(a.row - b.row));
-}
-
-float AStarPather::chebyshev_heuristic(const GridPos& a, const GridPos& b) const {
-    return static_cast<float>(std::max(std::abs(a.col - b.col), std::abs(a.row - b.row)));
-}
-
-float AStarPather::octile_heuristic(const GridPos& a, const GridPos& b) const {
-    float dx = static_cast<float>(std::abs(a.col - b.col));
-    float dy = static_cast<float>(std::abs(a.row - b.row));
-    return std::max(dx, dy) + (SQRT_2 - 1) * std::min(dx, dy);
-}
-
-float AStarPather::inconsistent_heuristic(const GridPos& a, const GridPos& b) const {
-    return ((b.row + b.col) % 2 > 0) ? euclidean_heuristic(a, b) : 0.0f;
 }
 
 float AStarPather::calculate_heuristic(const GridPos& a, const GridPos& b, Heuristic heuristic) const {
     switch (heuristic) {
-    case Heuristic::OCTILE:
-        return octile_heuristic(a, b);
+    case Heuristic::OCTILE: {
+        float dx = static_cast<float>(std::abs(a.col - b.col));
+        float dy = static_cast<float>(std::abs(a.row - b.row));
+        return std::max(dx, dy) - std::min(dx, dy) + (SQRT_2)*std::min(dx, dy);
+    }
     case Heuristic::CHEBYSHEV:
-        return chebyshev_heuristic(a, b);
+        return static_cast<float>(std::max(std::abs(a.col - b.col), std::abs(a.row - b.row)));
     case Heuristic::INCONSISTENT:
-        return inconsistent_heuristic(a, b);
+        return ((b.row + b.col) % 2 > 0) ? std::sqrt(static_cast<float>((a.col - b.col) * (a.col - b.col) + (a.row - b.row) * (a.row - b.row))) : 0.0f;
     case Heuristic::MANHATTAN:
-        return manhattan_heuristic(a, b);
-    case Heuristic::EUCLIDEAN:
-        return euclidean_heuristic(a, b);
+        return static_cast<float>(std::abs(a.col - b.col) + std::abs(a.row - b.row));
+    case Heuristic::EUCLIDEAN: {
+        float dx = static_cast<float>(a.col - b.col);
+        float dy = static_cast<float>(a.row - b.row);
+        return std::sqrt(dx * dx + dy * dy);
+    }
     default:
         return 0.0f;
     }
@@ -209,36 +228,46 @@ float AStarPather::distance_between(Node* a, Node* b) const {
     int dy = abs(a->gridPos.row - b->gridPos.row);
     return (dx > 0 && dy > 0) ? SQRT_2 : 1.0f;
 }
-
 void AStarPather::calculate_all_neighbors() {
+    
+    //Each direciton
     const std::vector<std::pair<int, int>> directions = {
         {-1, -1}, {-1, 0}, {-1, 1},
         { 0, -1}, { 0, 1},
         { 1, -1}, { 1, 0}, { 1, 1}
     };
 
-    for (int i = 0; i < MAX_SIZE; ++i) {
-        for (int j = 0; j < MAX_SIZE; ++j) {
-            Node& node = nodes[i][j];
+  //loop the iter
+    for (int row = 0; row < MAX_GRID_SIZE; ++row) {
+        for (int col = 0; col < MAX_GRID_SIZE; ++col) {
+            Node& node = nodes[row][col];
             node.neighbors.clear();
 
-            for (const auto& [di, dj] : directions) {
-                int ni = i + di;
-                int nj = j + dj;
+            // Check each possible direction for valid neighbors
+            for (const auto& direction : directions) {
+                int neighborRow = row + direction.first;
+                int neighborCol = col + direction.second;
 
-                if (terrain->is_valid_grid_position(ni, nj) && !terrain->is_wall(ni, nj)) {
-                    if (di != 0 && dj != 0) {
-                        if (terrain->is_wall(i + di, j) || terrain->is_wall(i, j + dj)) continue;
+                if (terrain->is_valid_grid_position(neighborRow, neighborCol) && !terrain->is_wall(neighborRow, neighborCol)) {
+                    // Check for diagonal movement and skip if blocked by a wall
+                    bool isDiagonal = (direction.first != 0 && direction.second != 0);
+                    if (isDiagonal) {
+                        bool blockedByWall = terrain->is_wall(row + direction.first, col) || terrain->is_wall(row, col + direction.second);
+                        if (blockedByWall) {
+                            continue;
+                        }
                     }
-                    node.neighbors.push_back(&nodes[ni][nj]);
+                    // Add valid neighbor to the node's neighbors list
+                    node.neighbors.push_back(&nodes[neighborRow][neighborCol]);
                 }
             }
         }
     }
 }
 
+
 void AStarPather::apply_rubberbanding(std::list<Vec3>& path) {
-    // If the path has less than 3 points, rubberbanding is not needed.
+
 
     // Initialize iterators for traversing the path.
     auto current = path.begin();
@@ -267,32 +296,41 @@ void AStarPather::apply_rubberbanding(std::list<Vec3>& path) {
 }
 
 bool AStarPather::is_clear_path(const Vec3& start, const Vec3& end) const {
-    // Get the grid positions of the start and end points.
+    // Get the grid positions of the start and end points
     GridPos startPos = terrain->get_grid_position(start);
     GridPos endPos = terrain->get_grid_position(end);
 
-    // Calculate the difference in the x and y directions.
+    // Calculate differences in x and y directions
     int dx = abs(endPos.col - startPos.col);
     int dy = abs(endPos.row - startPos.row);
     int x = startPos.col;
     int y = startPos.row;
-    int steps = 1 + dx + dy; // Total number of steps to take.
-    int x_step = (endPos.col > startPos.col) ? 1 : -1; // Direction to step in x.
-    int y_step = (endPos.row > startPos.row) ? 1 : -1; // Direction to step in y.
+    int steps = 1 + dx + dy;
+
+    int x_step = (endPos.col > startPos.col) ? 1 : -1;
+    int y_step = (endPos.row > startPos.row) ? 1 : -1;
+
     int error = dx - dy;
 
-    // Double the differences to help with error adjustment.
+    // Adjust differences 
     dx *= 2;
     dy *= 2;
 
-    // Loop through each step from start to end.
+    
+
     for (; steps > 0; --steps) {
-        // If the current position is a wall, return false.
+        // Return false if the current position is wall
         if (terrain->is_wall(y, x)) {
             return false;
         }
 
-        // Adjust the error and move in the x or y direction.
+        // Check for diagonal wall 
+        if ((x != startPos.col && y != startPos.row) &&
+            (terrain->is_wall(y, x - x_step) || terrain->is_wall(y - y_step, x))) {
+            return false;
+        }
+
+     //adjust the directiuon
         if (error > 0) {
             x += x_step;
             error -= dy;
@@ -301,17 +339,12 @@ bool AStarPather::is_clear_path(const Vec3& start, const Vec3& end) const {
             y += y_step;
             error += dx;
         }
-
-        // Check for diagonal wall cutting.
-        if ((x != startPos.col && y != startPos.row) &&
-            (terrain->is_wall(y, x - x_step) || terrain->is_wall(y - y_step, x))) {
-            return false;
-        }
     }
 
-    // If no walls are found, return true.
+    // If no walls are found, return true
     return true;
 }
+
 
 void AStarPather::apply_catmull_rom_spline(std::list<Vec3>& path) {
     // If the path has less than 4 points, spline interpolation is not needed.
@@ -355,6 +388,7 @@ void AStarPather::apply_catmull_rom_spline(std::list<Vec3>& path) {
 }
 
 
+//Add the points in between
 void AStarPather::add_intermediate_points(std::list<Vec3>& path, float maxDistance) {
     auto current = path.begin();
     auto end = path.end();
@@ -365,13 +399,20 @@ void AStarPather::add_intermediate_points(std::list<Vec3>& path, float maxDistan
             break;
         }
 
+        // Check distance between current and next points
         float dist = distance(*current, *next);
-        while (dist > maxDistance) {
-            Vec3 intermediatePoint = (*current + *next) * 0.5f;
-            next = path.insert(next, intermediatePoint);
-            dist = distance(*current, *next);
+        if (dist > maxDistance) {
+            // Insert intermediate points until the distance is within maxDistance
+            while (dist > maxDistance) {
+                Vec3 intermediatePoint = (*current + *next) * 0.5f;
+                next = path.insert(next, intermediatePoint);
+                dist = distance(*current, *next);
+            }
         }
-        ++current;
+        else {
+            // Move to the next point
+            ++current;
+        }
     }
 }
 
