@@ -390,22 +390,35 @@ void propagate_solo_occupancy(MapLayer<float>& layer, float decay, float growth)
             float currentValue = layer.get_value(r, c);
             float maxNeighborValue = 0.0f;
 
-            // Iterate over the four direct neighbors
-            int dr[] = { -1, 1, 0, 0 };
-            int dc[] = { 0, 0, -1, 1 };
+            // Iterate over the eight neighbors
+            int dr[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+            int dc[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < 8; ++i) {
                 int nr = r + dr[i];
                 int nc = c + dc[i];
 
-                // Check if the neighbor is within bounds and is not a wall
-                if (terrain->is_valid_grid_position(nr, nc) && !terrain->is_wall(nr, nc)) {
-                    // Calculate the distance (which is always 1 for direct neighbors)
-                    float distance = 1.0f;
-                    // Apply the exponential decay formula
-                    float neighborValue = layer.get_value(nr, nc) * std::exp(-distance * decay);
-                    // Keep the highest value
-                    maxNeighborValue = std::max(maxNeighborValue, neighborValue);
+                // Check if the neighbor is within bounds
+                if (terrain->is_valid_grid_position(nr, nc)) {
+                    bool isDiagonal = (std::abs(dr[i]) == 1 && std::abs(dc[i]) == 1);
+                    bool pathBlocked = false;
+
+                    if (isDiagonal) {
+                        // Check if the path to the diagonal neighbor is blocked by a wall
+                        if (terrain->is_wall(r + dr[i], c) || terrain->is_wall(r, c + dc[i])) {
+                            pathBlocked = true;
+                        }
+                    }
+
+                    // Check if the neighbor is not a wall and the path is not blocked
+                    if (!terrain->is_wall(nr, nc) && !pathBlocked) {
+                        // Calculate the distance
+                        float distance = static_cast<float>(std::sqrt(dr[i] * dr[i] + dc[i] * dc[i]));
+                        // Apply the exponential decay formula
+                        float neighborValue = layer.get_value(nr, nc) * std::exp(-distance * decay);
+                        // Keep the highest value
+                        maxNeighborValue = std::max(maxNeighborValue, neighborValue);
+                    }
                 }
             }
 
@@ -459,7 +472,33 @@ void normalize_solo_occupancy(MapLayer<float> &layer)
         range of [0, 1].  Negative values should be left unmodified.
     */
 
-    // WRITE YOUR CODE HERE
+
+        // Determine the maximum value in the given layer
+        float maxValue = std::numeric_limits<float>::min();
+
+        int mapHeight = terrain->get_map_height();
+        int mapWidth = terrain->get_map_width();
+
+        for (int r = 0; r < mapHeight; ++r) {
+            for (int c = 0; c < mapWidth; ++c) {
+                float value = layer.get_value(r, c);
+                if (value > maxValue) {
+                    maxValue = value;
+                }
+            }
+        }
+
+        // Normalize the layer by dividing each cell by the maximum value
+        for (int r = 0; r < mapHeight; ++r) {
+            for (int c = 0; c < mapWidth; ++c) {
+                float value = layer.get_value(r, c);
+                if (value > 0) {
+                    layer.set_value(r, c, value / maxValue);
+                }
+            }
+        }
+    
+
 }
 
 void normalize_dual_occupancy(MapLayer<float> &layer)
