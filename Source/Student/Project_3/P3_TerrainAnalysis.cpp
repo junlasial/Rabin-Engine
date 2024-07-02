@@ -370,74 +370,63 @@ void analyze_agent_vision(MapLayer<float>& layer, const Agent* agent)
 
 
 
-void propagate_solo_occupancy(MapLayer<float>& layer, float decay, float growth)
-{
-    const int mapHeight = terrain->get_map_height();
-    const int mapWidth = terrain->get_map_width();
+void propagate_solo_occupancy(MapLayer<float>& layer, float decay, float growth) {
+    // Define the size of the temporary layer
+    const int layerSize = 40;
+    float tempLayer[layerSize][layerSize] = { 0 };
 
-    // Temporary layer to store the new values
-    float tempLayer[40][40] = { 0.0f };
+    int mapHeight = terrain->get_map_height();
+    int mapWidth = terrain->get_map_width();
 
-    // Iterate over every cell in the given layer
-    for (int r = 0; r < mapHeight; ++r)
-    {
-        for (int c = 0; c < mapWidth; ++c)
-        {
-            if (!terrain->is_wall(r, c))
-            {
-                float currentValue = layer.get_value(r, c);
-                float highestNeighborValue = currentValue; // Start with the current value
+    // Process each cell in the layer
+    for (int r = 0; r < mapHeight; ++r) {
+        for (int c = 0; c < mapWidth; ++c) {
+            // Skip walls
+            if (terrain->is_wall(r, c)) {
+                continue;
+            }
 
-                // Get the values of each neighbor and apply decay factor
-                const std::vector<std::pair<int, int>> directions = {
-                    {-1, 0}, // top
-                    {1, 0},  // bottom
-                    {0, -1}, // left
-                    {0, 1},  // right
-                    {-1, -1}, // top-left
-                    {-1, 1},  // top-right
-                    {1, -1},  // bottom-left
-                    {1, 1}    // bottom-right
-                };
+            // Get the value of the current cell
+            float currentValue = layer.get_value(r, c);
+            float maxNeighborValue = 0.0f;
 
-                for (const auto& [dr, dc] : directions)
-                {
-                    int nr = r + dr;
-                    int nc = c + dc;
+            // Iterate over the four direct neighbors
+            int dr[] = { -1, 1, 0, 0 };
+            int dc[] = { 0, 0, -1, 1 };
 
-                    if (terrain->is_valid_grid_position(nr, nc) && !terrain->is_wall(nr, nc))
-                    {
-                        float neighborValue = layer.get_value(nr, nc) * decay;
-                        if (neighborValue > highestNeighborValue)
-                        {
-                            highestNeighborValue = neighborValue;
-                        }
-                    }
+            for (int i = 0; i < 4; ++i) {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+
+                // Check if the neighbor is within bounds and is not a wall
+                if (terrain->is_valid_grid_position(nr, nc) && !terrain->is_wall(nr, nc)) {
+                    // Calculate the distance (which is always 1 for direct neighbors)
+                    float distance = 1.0f;
+                    // Apply the exponential decay formula
+                    float neighborValue = layer.get_value(nr, nc) * std::exp(-distance * decay);
+                    // Keep the highest value
+                    maxNeighborValue = std::max(maxNeighborValue, neighborValue);
                 }
-
-                // Linearly interpolate from the current value to the highest neighbor value
-                float newValue = lerp(currentValue, highestNeighborValue, growth);
-
-                // Store the new value in the temporary layer
-                tempLayer[r][c] = newValue;
             }
-            else
-            {
-                // If the cell is a wall, retain the original value
-                tempLayer[r][c] = layer.get_value(r, c);
-            }
+
+            // Apply the linear interpolation formula with a slower growth factor
+            float newValue = (1 - growth * 1.0f) * currentValue + growth * 1.0f * maxNeighborValue;
+
+            // Store the value in the temporary layer
+            tempLayer[r][c] = newValue;
         }
     }
 
-    // Write the temporary layer back into the given layer
-    for (int r = 0; r < mapHeight; ++r)
-    {
-        for (int c = 0; c < mapWidth; ++c)
-        {
-            layer.set_value(r, c, tempLayer[r][c]);
+    // Write the temporary layer back into the original layer
+    for (int r = 0; r < mapHeight; ++r) {
+        for (int c = 0; c < mapWidth; ++c) {
+            if (!terrain->is_wall(r, c)) {
+                layer.set_value(r, c, tempLayer[r][c]);
+            }
         }
     }
 }
+
 
 
 
