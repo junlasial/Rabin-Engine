@@ -314,47 +314,132 @@ void analyze_visible_to_cell(MapLayer<float>& layer, int row, int col)
 }
 
 
-void analyze_agent_vision(MapLayer<float> &layer, const Agent *agent)
+void analyze_agent_vision(MapLayer<float>& layer, const Agent* agent)
 {
-    /*
-        For every cell in the given layer that is visible to the given agent,
-        mark it as 1.0, otherwise don't change the cell's current value.
+    // Get the agent's position and forward vector
+    Vec3 agentPos = agent->get_position();
+    Vec3 agentForward = agent->get_forward_vector();
 
-        You must consider the direction the agent is facing.  All of the agent data is
-        in three dimensions, but to simplify you should operate in two dimensions, the XZ plane.
+    // Normalize the agent's forward vector
+    agentForward.Normalize();
 
-        Take the dot product between the view vector and the vector from the agent to the cell,
-        both normalized, and compare the cosines directly instead of taking the arccosine to
-        avoid introducing floating-point inaccuracy (larger cosine means smaller angle).
+    // Define the agent's field of view (slightly larger than 180 degrees)
+    const float fieldOfView = cosf(200/2 * M_PI/180.0f); // cosine of 180 degrees + small angle
 
-        Give the agent a field of view slighter larger than 180 degrees.
+    int mapHeight = terrain->get_map_height();
+    int mapWidth = terrain->get_map_width();
 
-        Two cells are visible to each other if a line between their centerpoints doesn't
-        intersect the four boundary lines of every wall cell.  Make use of the is_clear_path
-        helper function.
-    */
+    // Iterate over each cell in the layer
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            // Skip if the cell is a wall
+            if (terrain->is_wall(r, c))
+            {
+                continue;
+            }
 
-    // WRITE YOUR CODE HERE
+            // Get the center position of the current cell in grid coordinates
+            Vec3 cellCenter = terrain->get_world_position(r, c);
+
+            // Create a vector from the agent to the cell in grid coordinates
+            Vec3 agentToCell(cellCenter-agentPos);
+
+            // Normalize the vector from agent to cell
+            agentToCell.Normalize();
+
+            // Calculate the dot product between the agent's forward vector and the vector to the cell
+            float dotProduct = agentForward.Dot( agentToCell);
+
+            // Check if the cell is within the agent's field of view
+            if (dotProduct > fieldOfView)
+            {
+                // Check if the path to the cell is clear using grid positions
+                GridPos agentGridPos = terrain->get_grid_position(agentPos);
+                if (is_clear_path(agentGridPos.row, agentGridPos.col, r, c))
+                {
+                    // Mark the cell as visible
+                    layer.set_value(r, c, 1.0f);
+                }
+            }
+        }
+    }
 }
 
-void propagate_solo_occupancy(MapLayer<float> &layer, float decay, float growth)
+
+
+
+void propagate_solo_occupancy(MapLayer<float>& layer, float decay, float growth)
 {
-    /*
-        For every cell in the given layer:
+    const int mapHeight = terrain->get_map_height();
+    const int mapWidth = terrain->get_map_width();
 
-            1) Get the value of each neighbor and apply decay factor
-            2) Keep the highest value from step 1
-            3) Linearly interpolate from the cell's current value to the value from step 2
-               with the growing factor as a coefficient.  Make use of the lerp helper function.
-            4) Store the value from step 3 in a temporary layer.
-               A float[40][40] will suffice, no need to dynamically allocate or make a new MapLayer.
+    // Temporary layer to store the new values
+    float tempLayer[40][40] = { 0.0f };
 
-        After every cell has been processed into the temporary layer, write the temporary layer into
-        the given layer;
-    */
-    
-    // WRITE YOUR CODE HERE
+    // Iterate over every cell in the given layer
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            if (!terrain->is_wall(r, c))
+            {
+                float currentValue = layer.get_value(r, c);
+                float highestNeighborValue = currentValue; // Start with the current value
+
+                // Get the values of each neighbor and apply decay factor
+                const std::vector<std::pair<int, int>> directions = {
+                    {-1, 0}, // top
+                    {1, 0},  // bottom
+                    {0, -1}, // left
+                    {0, 1},  // right
+                    {-1, -1}, // top-left
+                    {-1, 1},  // top-right
+                    {1, -1},  // bottom-left
+                    {1, 1}    // bottom-right
+                };
+
+                for (const auto& [dr, dc] : directions)
+                {
+                    int nr = r + dr;
+                    int nc = c + dc;
+
+                    if (terrain->is_valid_grid_position(nr, nc) && !terrain->is_wall(nr, nc))
+                    {
+                        float neighborValue = layer.get_value(nr, nc) * decay;
+                        if (neighborValue > highestNeighborValue)
+                        {
+                            highestNeighborValue = neighborValue;
+                        }
+                    }
+                }
+
+                // Linearly interpolate from the current value to the highest neighbor value
+                float newValue = lerp(currentValue, highestNeighborValue, growth);
+
+                // Store the new value in the temporary layer
+                tempLayer[r][c] = newValue;
+            }
+            else
+            {
+                // If the cell is a wall, retain the original value
+                tempLayer[r][c] = layer.get_value(r, c);
+            }
+        }
+    }
+
+    // Write the temporary layer back into the given layer
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            layer.set_value(r, c, tempLayer[r][c]);
+        }
+    }
 }
+
+
 
 void propagate_dual_occupancy(MapLayer<float> &layer, float decay, float growth)
 {
@@ -480,4 +565,20 @@ Vec2 get_center(int row, int col)
     // Assuming each cell is 1 unit by 1 unit and the center of each cell
     // is at (row + 0.5, col + 0.5)
     return Vec2(static_cast<float>(col) + 0.5f, static_cast<float>(row) + 0.5f);
+}
+
+
+float dot_product(const Vec2& a, const Vec2& b)
+{
+    return a.x * b.x + a.y * b.y;
+}
+
+Vec2 normalize(const Vec2& v)
+{
+    float length = std::sqrt(v.x * v.x + v.y * v.y);
+    if (length > 0)
+    {
+        return Vec2(v.x / length, v.y / length);
+    }
+    return Vec2(0, 0);
 }

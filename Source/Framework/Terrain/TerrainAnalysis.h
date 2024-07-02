@@ -13,6 +13,8 @@ written consent of DigiPen Institute of Technology is prohibited.
 
 #pragma once
 
+
+
 // forward declarations
 class Agent;
 template <typename T>
@@ -38,4 +40,3 @@ bool enemy_seek_player(MapLayer<float> &layer, AStarAgent *enemy);
 float euclidean_distance(int row1, int col1, int row2, int col2);
 
 Vec2 get_center(int row, int col);
-//bool is_blocked_by_wall(int startRow, int startCol, int targetRow, int targetCol);
