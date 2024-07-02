@@ -32,3 +32,9 @@ void normalize_dual_occupancy(MapLayer<float> &layer);
 void enemy_field_of_view(MapLayer<float> &layer, float angle, float closeDistance, float occupancyValue, AStarAgent *enemy);
 bool enemy_find_player(MapLayer<float> &layer, AStarAgent *enemy, Agent *player);
 bool enemy_seek_player(MapLayer<float> &layer, AStarAgent *enemy);
+
+
+//Student functions
+float euclidean_distance(int row1, int col1, int row2, int col2);
+
+Vec2 get_center(int row, int col);
