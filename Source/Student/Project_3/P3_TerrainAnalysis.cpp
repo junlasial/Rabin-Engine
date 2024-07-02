@@ -460,8 +460,83 @@ void propagate_dual_occupancy(MapLayer<float> &layer, float decay, float growth)
         After every cell has been processed into the temporary layer, write the temporary layer into
         the given layer;
     */
+ 
 
-    // WRITE YOUR CODE HERE
+
+        //// Define the size of the temporary layer
+        //const int layerSize = 40;
+        //float tempLayer[layerSize][layerSize] = { 0 };
+
+        //int mapHeight = terrain->get_map_height();
+        //int mapWidth = terrain->get_map_width();
+
+        //// Process each cell in the layer
+        //for (int r = 0; r < mapHeight; ++r) {
+        //    for (int c = 0; c < mapWidth; ++c) {
+        //        // Skip walls
+        //        if (terrain->is_wall(r, c)) {
+        //            continue;
+        //        }
+
+        //        // Get the value of the current cell
+        //        float currentValue = layer.get_value(r, c);
+        //        float maxAbsNeighborValue = 0.0f;
+
+        //        // Iterate over the eight neighbors
+        //        int dr[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+        //        int dc[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+        //        for (int i = 0; i < 8; ++i) {
+        //            int nr = r + dr[i];
+        //            int nc = c + dc[i];
+
+        //            // Check if the neighbor is within bounds
+        //            if (terrain->is_valid_grid_position(nr, nc)) {
+        //                bool isDiagonal = (std::abs(dr[i]) == 1 && std::abs(dc[i]) == 1);
+        //                bool pathBlocked = false;
+
+        //                if (isDiagonal) {
+        //                    // Check if the path to the diagonal neighbor is blocked by a wall
+        //                    if (terrain->is_wall(r + dr[i], c) || terrain->is_wall(r, c + dc[i])) {
+        //                        pathBlocked = true;
+        //                    }
+        //                }
+
+        //                // Check if the neighbor is not a wall and the path is not blocked
+        //                if (!terrain->is_wall(nr, nc) && !pathBlocked) {
+        //                    // Calculate the distance
+        //                    float distance = static_cast<float>(std::sqrt(dr[i] * dr[i] + dc[i] * dc[i]));
+        //                    // Apply the exponential decay formula
+        //                    float neighborValue = layer.get_value(nr, nc) * std::exp(-distance * decay);
+        //                    // Keep the highest absolute value
+        //                    if (std::abs(neighborValue) > std::abs(maxAbsNeighborValue)) {
+        //                        maxAbsNeighborValue = neighborValue;
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        // Apply the linear interpolation formula with the growth factor
+        //        float newValue = (1 - growth) * currentValue + growth * maxAbsNeighborValue;
+
+        //        // Store the value in the temporary layer
+        //        tempLayer[r][c] = newValue;
+        //    }
+        //}
+
+        //// Write the temporary layer back into the original layer
+        //for (int r = 0; r < mapHeight; ++r) {
+        //    for (int c = 0; c < mapWidth; ++c) {
+        //        if (!terrain->is_wall(r, c)) {
+        //            layer.set_value(r, c, tempLayer[r][c]);
+        //        }
+        //    }
+        //}
+    
+
+
+    
+
 }
 
 void normalize_solo_occupancy(MapLayer<float> &layer)
@@ -513,9 +588,12 @@ void normalize_dual_occupancy(MapLayer<float> &layer)
     */
 
     // WRITE YOUR CODE HERE
+ 
+
+
 }
 
-void enemy_field_of_view(MapLayer<float> &layer, float fovAngle, float closeDistance, float occupancyValue, AStarAgent *enemy)
+void enemy_field_of_view(MapLayer<float>& layer, float fovAngle, float closeDistance, float occupancyValue, AStarAgent* enemy)
 {
     /*
         First, clear out the old values in the map layer by setting any negative value to 0.
@@ -532,8 +610,83 @@ void enemy_field_of_view(MapLayer<float> &layer, float fovAngle, float closeDist
         as a fov cone.
     */
 
-    // WRITE YOUR CODE HERE
+    // Clear out the old values in the map layer by setting any negative value to 0
+    int mapHeight = terrain->get_map_height();
+    int mapWidth = terrain->get_map_width();
+
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            if (layer.get_value(r, c) < 0)
+            {
+                layer.set_value(r, c, 0);
+            }
+        }
+    }
+
+    // Get the enemy's position and forward vector
+    Vec3 enemyPos = enemy->get_position();
+    Vec3 enemyForward = enemy->get_forward_vector();
+
+    // Normalize the enemy's forward vector
+    enemyForward.Normalize();
+
+    // Convert field of view angle to cosine for comparison (using float constants)
+    float cosFov = cosf(fovAngle/2 * static_cast<float>(M_PI) / 180.0f);
+
+    // Iterate over each cell in the layer
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            // Skip if the cell is a wall
+            if (terrain->is_wall(r, c))
+            {
+                continue;
+            }
+
+            // Get the center position of the current cell in world coordinates
+            Vec3 cellCenter = terrain->get_world_position(r, c);
+
+            // Calculate the vector from the enemy to the cell
+            Vec3 enemyToCell = cellCenter - enemyPos;
+
+            // Calculate the distance from the enemy to the cell
+            float distanceToCell = enemyToCell.Length();
+
+            GridPos enemyGridPos = terrain->get_grid_position(enemyPos);
+            GridPos cellGridPos = terrain->get_grid_position(cellCenter);
+
+            // Check if the cell is within the close distance radius
+            if (distanceToCell < closeDistance)
+            {
+                if (is_clear_path(enemyGridPos.row, enemyGridPos.col, cellGridPos.row, cellGridPos.col))
+                {
+                    layer.set_value(r, c, occupancyValue);
+                }
+            }
+            else
+            {
+                // Normalize the vector from the enemy to the cell
+                enemyToCell.Normalize();
+
+                // Calculate the dot product between the enemy's forward vector and the vector to the cell
+                float dotProduct = enemyForward.Dot(enemyToCell);
+
+                // Check if the cell is within the enemy's field of view cone
+                if (dotProduct > cosFov)
+                {
+                    if (is_clear_path(enemyGridPos.row, enemyGridPos.col, cellGridPos.row, cellGridPos.col))
+                    {
+                        layer.set_value(r, c, occupancyValue);
+                    }
+                }
+            }
+        }
+    }
 }
+
 
 bool enemy_find_player(MapLayer<float> &layer, AStarAgent *enemy, Agent *player)
 {
@@ -576,7 +729,52 @@ bool enemy_seek_player(MapLayer<float> &layer, AStarAgent *enemy)
 
     // WRITE YOUR CODE HERE
 
-    return false; // REPLACE THIS
+  
+        int mapHeight = terrain->get_map_height();
+        int mapWidth = terrain->get_map_width();
+
+        float highestValue = 0.0f;
+        Vec3 targetPos = Vec3(0.0f, 0.0f, 0.0f); // Default initialization
+        bool targetFound = false;
+        float closestDistance = std::numeric_limits<float>::max();
+
+        Vec3 enemyPos = enemy->get_position();
+        GridPos enemyGridPos = terrain->get_grid_position(enemyPos);
+
+        for (int r = 0; r < mapHeight; ++r)
+        {
+            for (int c = 0; c < mapWidth; ++c)
+            {
+                float value = layer.get_value(r, c);
+
+                if (value > highestValue)
+                {
+                    highestValue = value;
+                    targetPos = terrain->get_world_position(r, c);
+                    closestDistance = euclidean_distance(enemyGridPos.row, enemyGridPos.col, r, c);
+                    targetFound = true;
+                }
+                else if (value == highestValue && value > 0)
+                {
+                    float distance = euclidean_distance(enemyGridPos.row, enemyGridPos.col, r, c);
+                    if (distance < closestDistance)
+                    {
+                        targetPos = terrain->get_world_position(r, c);
+                        closestDistance = distance;
+                    }
+                }
+            }
+        }
+
+        if (targetFound)
+        {
+            enemy->path_to(targetPos);
+            return true;
+        }
+
+        return false;
+   
+
 }
 
 
