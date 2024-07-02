@@ -48,7 +48,6 @@ float distance_to_closest_wall(int row, int col)
 
 bool is_clear_path(int row0, int col0, int row1, int col1)
 {
-
     /*
     Two cells (row0, col0) and (row1, col1) are visible to each other if a line
     between their centerpoints doesn't intersect the four boundary lines of every
@@ -56,58 +55,55 @@ bool is_clear_path(int row0, int col0, int row1, int col1)
     so that a diagonal line passing by the corner will intersect it.  Make use of the
     line_intersect helper function for the intersection test and the is_wall member
     function in the global terrain to determine if a cell is a wall or not.
-*/
+    */
 
-// WRITE YOUR CODE HERE
-// 
-   
+    // Get the center positions of the starting and ending cells
+    Vec2 start = get_center(row0, col0);
+    Vec2 end = get_center(row1, col1);
 
-        // Get the center positions of the starting and ending cells
-        Vec2 start = get_center(row0, col0);
-        Vec2 end = get_center(row1, col1);
+    int mapHeight = terrain->get_map_height();
+    int mapWidth = terrain->get_map_width();
 
-        int mapHeight = terrain->get_map_height();
-        int mapWidth = terrain->get_map_width();
+    // Determine the bounding box of the line segment
+    int minRow = std::min(row0, row1);
+    int maxRow = std::max(row0, row1);
+    int minCol = std::min(col0, col1);
+    int maxCol = std::max(col0, col1);
 
-        // Determine the bounding box of the line segment
-        int minRow = std::min(row0, row1);
-        int maxRow = std::max(row0, row1);
-        int minCol = std::min(col0, col1);
-        int maxCol = std::max(col0, col1);
+    // Puff factor
+    const float puff = 0.01f;
 
-        // Iterate only over the cells within the bounding box
-        for (int r = minRow; r <= maxRow; ++r)
+    // Iterate only over the cells within the bounding box
+    for (int r = minRow; r <= maxRow; ++r)
+    {
+        for (int c = minCol; c <= maxCol; ++c)
         {
-            for (int c = minCol; c <= maxCol; ++c)
+            // Check if the cell is a wall
+            if (terrain->is_wall(r, c))
             {
-                // Check if the cell is a wall
-                if (terrain->is_wall(r, c))
-                {
-                    // Get the boundaries of the wall cell
-                    Vec2 topLeft = get_center(r, c) + Vec2(-0.5f, -0.5f);
-                    Vec2 topRight = get_center(r, c) + Vec2(0.5f, -0.5f);
-                    Vec2 bottomLeft = get_center(r, c) + Vec2(-0.5f, 0.5f);
-                    Vec2 bottomRight = get_center(r, c) + Vec2(0.5f, 0.5f);
+                // Get the boundaries of the wall cell with puff
+                Vec2 topLeft = get_center(r, c) + Vec2(-0.5f - puff, -0.5f - puff);
+                Vec2 topRight = get_center(r, c) + Vec2(0.5f + puff, -0.5f - puff);
+                Vec2 bottomLeft = get_center(r, c) + Vec2(-0.5f - puff, 0.5f + puff);
+                Vec2 bottomRight = get_center(r, c) + Vec2(0.5f + puff, 0.5f + puff);
 
-                    // Check if the line intersects any of the four boundaries of the wall cell
-                    if (line_intersect(start, end, topLeft, topRight) ||
-                        line_intersect(start, end, topRight, bottomRight) ||
-                        line_intersect(start, end, bottomRight, bottomLeft) ||
-                        line_intersect(start, end, bottomLeft, topLeft))
-                    {
-                        // If any intersection is found, the path is not clear
-                        return false;
-                    }
+                // Check if the line intersects any of the four boundaries of the wall cell
+                if (line_intersect(start, end, topLeft, topRight) ||
+                    line_intersect(start, end, topRight, bottomRight) ||
+                    line_intersect(start, end, bottomRight, bottomLeft) ||
+                    line_intersect(start, end, bottomLeft, topLeft))
+                {
+                    // If any intersection is found, the path is not clear
+                    return false;
                 }
             }
         }
+    }
 
-        // If no intersections are found, the path is clear
-        return true;
-    
-
-
+    // If no intersections are found, the path is clear
+    return true;
 }
+
 
 void analyze_openness(MapLayer<float>& layer)
 {
@@ -225,7 +221,7 @@ void analyze_visibility(MapLayer<float> &layer)
     
 }
 
-void analyze_visible_to_cell(MapLayer<float> &layer, int row, int col)
+void analyze_visible_to_cell(MapLayer<float>& layer, int row, int col)
 {
     /*
         For every cell in the given layer mark it with 1.0
@@ -237,8 +233,86 @@ void analyze_visible_to_cell(MapLayer<float> &layer, int row, int col)
         helper function.
     */
 
-    // WRITE YOUR CODE HERE
+    int mapHeight = terrain->get_map_height();
+    int mapWidth = terrain->get_map_width();
+
+    // First pass: Mark cells visible to the given cell with 1.0
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            if (terrain->is_wall(r, c))
+            {
+                layer.set_value(r, c, 0.0f); // Ensure walls are marked as 0.0
+            }
+            else if (is_clear_path(row, col, r, c))
+            {
+                layer.set_value(r, c, 1.0f);
+            }
+            else
+            {
+                layer.set_value(r, c, 0.0f);
+            }
+        }
+    }
+
+    // Mark the original cell as visible to itself
+    layer.set_value(row, col, 1.0f);
+
+    // Second pass: Mark cells next to a visible cell with 0.5 if they are not blocked
+    for (int r = 0; r < mapHeight; ++r)
+    {
+        for (int c = 0; c < mapWidth; ++c)
+        {
+            if (layer.get_value(r, c) == 0.0f && !terrain->is_wall(r, c))
+            {
+                // Check the 8 neighboring cells (including diagonals)
+                bool nextToVisible = false;
+                const std::vector<std::pair<int, int>> directions = {
+                    {-1, 0}, // top
+                    {1, 0},  // bottom
+                    {0, -1}, // left
+                    {0, 1},  // right
+                    {-1, -1}, // top-left
+                    {-1, 1},  // top-right
+                    {1, -1},  // bottom-left
+                    {1, 1}    // bottom-right
+                };
+
+                for (const auto& [dr, dc] : directions)
+                {
+                    int nr = r + dr;
+                    int nc = c + dc;
+
+                    if (terrain->is_valid_grid_position(nr, nc) && !terrain->is_wall(nr, nc) && layer.get_value(nr, nc) == 1.0f)
+                    {
+                        // Additional check for diagonals
+                        if (abs(dr) == 1 && abs(dc) == 1)
+                        {
+                            // Ensure both adjacent cells are not walls
+                            if (!terrain->is_wall(r, c + dc) && !terrain->is_wall(r + dr, c))
+                            {
+                                nextToVisible = true;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            nextToVisible = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (nextToVisible)
+                {
+                    layer.set_value(r, c, 0.5f);
+                }
+            }
+        }
+    }
 }
+
 
 void analyze_agent_vision(MapLayer<float> &layer, const Agent *agent)
 {
