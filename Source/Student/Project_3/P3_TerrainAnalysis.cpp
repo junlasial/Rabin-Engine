@@ -794,17 +794,4 @@ Vec2 get_center(int row, int col)
 }
 
 
-float dot_product(const Vec2& a, const Vec2& b)
-{
-    return a.x * b.x + a.y * b.y;
-}
 
-Vec2 normalize(const Vec2& v)
-{
-    float length = std::sqrt(v.x * v.x + v.y * v.y);
-    if (length > 0)
-    {
-        return Vec2(v.x / length, v.y / length);
-    }
-    return Vec2(0, 0);
-}
