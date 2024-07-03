@@ -38,5 +38,10 @@ bool enemy_seek_player(MapLayer<float> &layer, AStarAgent *enemy);
 
 //Student functions
 float euclidean_distance(int row1, int col1, int row2, int col2);
-
 Vec2 get_center(int row, int col);
+
+void clear_visibility_layer(MapLayer<float>& visibilityLayer, int mapHeight, int mapWidth);
+void calculate_visibility_counts(std::vector<std::vector<int>>& visibilityCounts, int mapHeight, int mapWidth);
+void set_visibility_values(MapLayer<float>& visibilityLayer, const std::vector<std::vector<int>>& visibilityCounts, int mapHeight, int mapWidth);
+void mark_visible_cells(MapLayer<float>& visibilityLayer, int targetRow, int targetCol, int mapHeight, int mapWidth);
+void mark_cells_next_to_visible(MapLayer<float>& visibilityLayer, int mapHeight, int mapWidth);
